@@ -1,0 +1,143 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+:root {
+    --main-color: #B00005;
+    --second-color: #C83701;
+    --color3: #efe8e0;
+}
+body {
+    background-color: var(--color3);
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+    line-height: 1.4;
+    display: grid;
+    place-content: center;
+}
+header button {
+    height: 50px;  
+    width: 50px;
+    position: fixed;
+    top: 20px;
+    left: 40px;
+    background: var(--main-color);
+    padding: 6px;
+    outline: none;
+    border: 1px solid var(--color3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+}
+header button a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+header button i {
+    font-size: 30px;
+    color: var(--color3);
+}
+/*img {
+    max-width: 100%;
+    display: block;
+}*/
+h1, h2 {
+    font-family: 'Young Serif', serif;
+    font-weight: 400;
+}
+h1 {
+    color: #000000;
+    font-size: 2.8em;
+    padding-top: 3rem;
+    margin-left: 1rem;
+}
+h2 {
+    color: #000000;
+    margin-top: 2rem;
+    margin-left: .5rem;
+}
+.recipe-step {
+    margin: 1rem 0;
+    padding: 0rem 2rem 2rem 2rem;
+}
+ul {
+    padding-left: 1.25rem;
+}
+ul li::marker {
+    color:#000000;
+    font-weight: bold;
+}
+ul li span {
+    color: #000000;
+    margin-left: 1rem;
+    font-weight: 700;
+}
+hr {
+    margin: 1.5rem 0;
+    border: 1px solid var(--color3);
+}
+.container {
+    max-width: 800px;
+    background-color: #fff;
+    margin: 2rem;
+    border-radius: 1rem;
+}
+
+/*.container .recipe-img {
+    padding: 2rem;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+.container .recipe-img img {
+    border-radius: 1rem;
+}*/
+.recipe-information {
+    padding: 0rem 2rem 0rem 2rem;
+} 
+/*.description {
+    margin: .5rem;
+}*/
+.bahan {
+    margin-left: 2rem;
+}
+.bahan li {
+    margin-bottom: .5rem;
+}
+.bahan li span {
+    font-weight: initial;
+}
+.instruction .item {
+    margin-bottom: .5rem;
+    display: flex;
+}
+.instruction .item .num {
+    margin-left: .5rem;
+    font-weight: 700;
+    padding: 20px;
+}
+
+@media (max-width: 540px) {
+    h1 {
+        margin-top:  2rem;
+    }
+    .container {
+        margin: 0;
+    }
+    .container .recipe-img {
+        padding: 0;
+        border-radius: 0;
+    }
+    .container .recipe-img img {
+        border-radius: 0;
+    }
+}
