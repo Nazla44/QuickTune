@@ -132,51 +132,82 @@ header.active .navbar a{
     margin: 0.5rem 0 1.4rem;
 }*/
 
+/* --- Pastikan Variabel Warna Didefinisikan di :root atau Lokal --- */
+:root {
+    --color-light-yellow: #FFF7AD;
+    --color-pink-soft: #FFB3AE;
+    --color-magenta: #FF49C1;
+    --color-purple-dark: #6A1452;
+    --color-deep-purple: #44113E;
+    --text-light: #FFFFFF;
+}
+
 .home{
     width: 100%;
     min-height: 100vh;
-    display: flex;
-    flex-wrap: wrap;
+    display: flex; /* Kunci untuk tata letak bersebelahan */
+    flex-wrap: wrap; 
     align-items: center;
+    padding: 0 50px; /* Tambahkan padding agar konten tidak menempel tepi */
     
-    /* KODE GRADASI WARNA KUSTOM */
+    /* Gradasi Warna Kustom */
     background: linear-gradient(
         135deg,
-        #FFF7AD, /* Kuning Paling Cerah */
-        #FFB3AE, /* Pink Soft */
-        #FF49C1, /* Magenta Cerah */
-        #6A1452, /* Ungu Tua */
-        #44113E  /* Ungu Paling Gelap */
+        var(--color-light-yellow),
+        var(--color-pink-soft),
+        var(--color-magenta),
+        var(--color-purple-dark),
+        var(--color-deep-purple)
     );
     
     background-repeat: no-repeat;
-    /* background-size: cover; & background-position: center; bisa dipertahankan, 
-       namun tidak wajib untuk linear-gradient */
     background-size: cover; 
     background-position: center; 
-    gap: 1rem;
-}
-.home-text{
-    flex: 1 1 17rem;
-}
-.home-img{
-    flex: 1 1 17rem;
-}
-.home-text span{
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--main-color); /* Pastikan --main-color kontras dengan gradasi */
-}
-.home-text h1{
-   font-size: 3.5rem;
-   color: var(--second-color);  /* Pastikan --second-color kontras dengan gradasi */
-}
-.home-text p {
-    margin: 0.5rem 0 1.4rem;
+    gap: 2rem; /* Jarak antara teks dan gambar */
 }
 
-/* kategoty */
+/* 1. KELAS TEKS */
+.home-text {
+    flex: 1 1 25rem; /* Memberi basis lebar yang lebih besar untuk teks */
+    color: var(--text-light);
+    /* Tambahkan style untuk span, h1, dan p di sini jika diperlukan */
+}
+
+/* 2. KELAS GAMBAR (DIKOREKSI AGAR MENGGUNAKAN .home-image) */
+.home-image { 
+    flex: 1 1 17rem; /* Memberi basis lebar yang lebih kecil untuk gambar */
+    display: flex;
+    justify-content: flex-end; /* Memindahkan gambar ke kanan */
+    align-items: center;
+}
+
+.home-image img {
+    max-width: 90%; 
+    height: 350px; 
+    object-fit: cover;
+    border-radius: 50%; /* Bentuk Lingkaran */
+    transition: all 0.4s ease-in-out; 
+    
+    /* Efek Timbul / Glow dengan Multiple Box Shadows */
+    box-shadow: 
+        0 0 15px rgba(255, 73, 193, 0.7), /* Magenta Glow */
+        0 0 30px rgba(106, 20, 82, 0.8),  /* Ungu Tua Glow */
+        0 15px 40px rgba(0, 0, 0, 0.5);   /* Bayangan Kedalaman */
+        
+    /* Border Menarik */
+    border: 6px solid var(--color-magenta); 
+}
+
+/* Efek Zoom saat Kursor Diarahkan (Hover) */
+.home-image img:hover {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 
+        0 0 25px var(--color-light-yellow), 
+        0 0 50px var(--color-magenta),
+        0 20px 50px rgba(0, 0, 0, 0.7);
+}
+
+/* kategory */
 .category-container {
   overflow: hidden;
   border-radius: 3em;
