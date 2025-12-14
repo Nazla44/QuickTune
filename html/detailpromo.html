@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Promo - Happy Hour 30%</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Palet Warna & Variabel */
+        :root {
+            --deep-navy: #1C3A5A;
+            --vibrant-magenta: #FF4B65; /* Mirip dengan FF49C1 */
+            --off-white: #F5F5F5;
+            --white: #FFFFFF;
+            --dark-gray: #495057;
+            --success-green: #28a745;
+            --promo-accent: #FF49C1; /* Magenta Cerah */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--off-white);
+            margin: 0;
+            padding: 0;
+            color: var(--dark-gray);
+        }
+
+        /* HEADER (Menggunakan style dari image_238b5c.jpg) */
+        header {
+            background-color: var(--promo-accent); 
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: 40px;
+            font-weight: 600;
+        }
+        
+        /* DETAIL CONTENT LAYOUT */
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .promo-detail-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .promo-header {
+            background-color: var(--deep-navy);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .promo-header h1 {
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+        }
+
+        .promo-header .tagline {
+            color: var(--promo-accent);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .promo-body {
+            padding: 30px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .details, .syarat {
+            flex: 1;
+        }
+
+        .details h3, .syarat h3 {
+            color: var(--deep-navy);
+            border-bottom: 2px solid var(--promo-accent);
+            padding-bottom: 5px;
+            margin-top: 0;
+        }
+
+        .details p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background-color: var(--off-white);
+            padding: 15px;
+            border-left: 5px solid var(--success-green);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--success-green);
+        }
+
+        .syarat ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .syarat ul li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .syarat ul li i {
+            position: absolute;
+            left: 0;
+            color: var(--promo-accent);
+        }
+
+        .action-area {
+            text-align: center;
+            padding: 20px 30px 40px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-action {
+            background-color: var(--promo-accent);
+            color: var(--white);
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-action:hover {
+            background-color: #e63e54;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">QuickTune</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Promo</a>
+            <a href="#">Booking</a>
+            <a href="#">Contact Us</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="promo-detail-card">
+            
+            <div class="promo-header">
+                <span class="tagline"><i class="fas fa-bolt"></i> PROMO OTOMATIS (DYNAMIC PRICING)</span>
+                <h1>Happy Hour Diskon Ruangan 30%</h1>
+                <p>Meningkatkan *Vibe* Karaoke di jam sepi dengan harga yang lebih ringan.</p>
+            </div>
+            
+            <div class="promo-body">
+                
+                <div class="details">
+                    <h3>Periode & Berlaku</h3>
+                    <div class="info-box">
+                        <i class="fas fa-calendar-alt"></i> Berlaku Setiap Hari Senin - Kamis
+                    </div>
+                    <div class="info-box" style="border-left-color: var(--promo-accent); color: var(--promo-accent);">
+                        <i class="fas fa-clock"></i> Hanya Pukul 12:00 WIB sampai 17:00 WIB
+                    </div>
+                    <p>Promo *Happy Hour* ini merupakan bagian dari sistem Dynamic Pricing QuickTune. Diskon 30% akan otomatis diterapkan pada harga sewa ruangan Small dan Medium selama periode waktu yang ditentukan, tanpa perlu memasukkan kode. Tujuan promo ini adalah untuk memaksimalkan *occupancy rate* di luar jam sibuk.</p>
+                    
+                    <h3>Cara Penggunaan</h3>
+                    <p>Pilih slot waktu di antara jam 12:00 - 17:00 pada hari kerja. Diskon akan terhitung otomatis di halaman pembayaran.</p>
+                </div>
+                
+                <div class="syarat">
+                    <h3>Syarat & Ketentuan</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Hanya berlaku untuk pemesanan ruangan Small dan Medium.</li>
+                        <li><i class="fas fa-check-circle"></i> Tidak dapat digabungkan dengan promo *voucher* lainnya.</li>
+                        <li><i class="fas fa-check-circle"></i> Harga F&B tetap normal (tidak termasuk diskon 30%).</li>
+                        <li><i class="fas fa-check-circle"></i> Durasi maksimal pemesanan per promo adalah 3 jam.</li>
+                        <li><i class="fas fa-check-circle"></i> QuickTune berhak mengubah S&K tanpa pemberitahuan sebelumnya.</li>
+                    </ul>
+                </div>
+
+            </div>
+            
+            <div class="action-area">
+                <button class="btn-action" onclick="window.location.href='booking.html'">
+                    <i class="fas fa-arrow-right"></i> Ambil Promo Sekarang & Cek Slot!
+                </button>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
