@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-CEPAT ADMIN: Update Status Ruangan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Definisi Variabel Warna */
+        :root {
+            --main-color: #FF49C1; 
+            --second-color: #6A1452; 
+            --color3: #efe8e0; 
+            --background-contrast: #f5f0ff; 
+            --white: #FFFFFF;
+
+            /* Warna Status Ruangan */
+            --status-available: #2ECC71; 
+            --status-booked: #0b73b3; 
+            --status-cleaning: #F39C12; 
+            --status-vip: #8E44AD; 
+            --button-accent: #a868f0; 
+            --sub-nav-color: #581144; /* Warna sedikit lebih terang dari second-color */
+        }
+
+        /* Reset Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-contrast);
+            color: #333;
+            margin: 0; 
+        }
+
+        /* Struktur Utama Dashboard */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%; 
+            margin: 0; 
+            background-color: var(--white);
+        }
+
+        /* 1. Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--second-color);
+            color: var(--white);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 10px;
+            color: var(--main-color);
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        /* Gaya Sub-Menu */
+        .sub-nav-item a {
+            padding-left: 45px !important; /* Indentasi untuk sub-menu */
+            background-color: var(--sub-nav-color);
+            font-size: 0.95rem !important;
+        }
+        
+        /* Active Style */
+        .nav-item.active a, .sub-nav-item.active a {
+            background-color: var(--main-color);
+            font-weight: 600;
+        }
+        
+        /* Parent Menu */
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--white);
+            transition: background-color 0.3s;
+            font-size: 1.05rem;
+        }
+
+        .nav-item a i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover a:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sub-nav-item:hover a:not(.active) {
+            background-color: #791a5f;
+        }
+
+
+        .sidebar-footer {
+            padding: 20px;
+            background-color: #44113E;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: auto; 
+        }
+
+        /* 2. Main Content & Header */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: var(--white); 
+        }
+
+        .content-area {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto; 
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 1.7rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-header h2 i {
+            margin-right: 10px;
+            color: var(--main-color); 
+        }
+
+        .header-divider {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--main-color);
+            margin: 5px 0 30px 0;
+        }
+
+        /* 3. Form Styling (Sama seperti sebelumnya) */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group select {
+            appearance: none; 
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%236A1452" width="18px" height="18px"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            padding-right: 30px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--main-color);
+            outline: none;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Status Radio Buttons */
+        .status-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .status-options input[type="radio"] {
+            display: none;
+        }
+
+        .status-options label {
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 0;
+        }
+
+        .status-options input[type="radio"]:checked + label {
+            color: var(--white);
+            font-weight: 600;
+            border-color: transparent;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Warna Status Radio */
+        #status-available:checked + label { background-color: var(--status-available); }
+        #status-booked:checked + label { background-color: var(--status-booked); }
+        #status-cleaning:checked + label { background-color: var(--status-cleaning); }
+
+        /* Tombol Simpan */
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--button-accent); 
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background-color: #8f58d9;
+            transform: translateY(-1px);
+        }
+
+        /* Media Query untuk Responsif */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .nav-menu ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+            
+            .nav-item, .sub-nav-item {
+                 flex-grow: 1;
+            }
+
+            .sidebar-footer {
+                display: none; 
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .status-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .status-options label {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">QuickTune Admin</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-bed"></i> Room Management</a>
+                    </li>
+                    <!--<li class="nav-item sub-nav-item">
+                        <a href="#">Status Real-Time</a>
+                    </li>
+                    <li class="nav-item sub-nav-item active">
+                        <a href="#">Update Status</a>
+                    </li>-->
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-cash-register"></i> POS & Transaksi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-tags"></i> Pricing & Promo</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                Kasir Shift Sore
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-area">
+                <section class="update-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-pen-to-square"></i> Formulir Update Status Ruangan</h2>
+                        <span class="header-divider"></span>
+                    </div>
+                
+                    <form action="#" method="POST">
+                        
+                        <div class="form-group">
+                            <label for="room-select"><i class="fas fa-door-open"></i> Pilih Ruangan yang Diperbarui:</label>
+                            <select id="room-select" name="room_id" required>
+                                <option value="" disabled selected>-- Pilih Nomor Ruangan --</option>
+                                <optgroup label="Silver (S01-S09)">
+                                    <option value="S01">S01</option>
+                                    <option value="S02">S02</option>
+                                    <option value="S03">S03</option>
+                                    <option value="S04">S04</option>
+                                    <option value="S05">S05</option>
+                                    <option value="S06">S06</option>
+                                    <option value="S07">S07</option>
+                                    <option value="S08">S08</option>
+                                    <option value="S09">S09</option>
+                                </optgroup>
+                                <optgroup label="Platinum (P01-P05)">
+                                    <option value="P01">P01</option>
+                                    <option value="P02">P02</option>
+                                    <option value="P03">P03</option>
+                                    <option value="P04">P04</option>
+                                    <option value="P05">P05</option>
+                                </optgroup>
+                                <optgroup label="VIP (V01-V05)">
+                                    <option value="V01">V01</option>
+                                    <option value="V02">V02</option>
+                                    <option value="V03">V03</option>
+                                    <option value="V04">V04</option>
+                                    <option value="V05">V05</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-sync-alt"></i> Update Status:</label>
+                            <div class="status-options">
+                                <input type="radio" id="status-available" name="room_status" value="available" checked>
+                                <label for="status-available"><i class="fas fa-check-circle"></i> Tersedia (KOSONG)</label>
+
+                                <input type="radio" id="status-booked" name="room_status" value="booked">
+                                <label for="status-booked"><i class="fas fa-calendar-check"></i> Dibooking / Check-in</label>
+                                
+                                <input type="radio" id="status-cleaning" name="room_status" value="cleaning">
+                                <label for="status-cleaning"><i class="fas fa-broom"></i> Perlu Dibersihkan</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes"><i class="fas fa-sticky-note"></i> Catatan/Detail Status:</label>
+                            <textarea id="notes" name="notes" placeholder="Masukkan detail tambahan tentang status ruangan saat ini..."></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-button">
+                            <i class="fas fa-save"></i> SIMPAN PERUBAHAN STATUS
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

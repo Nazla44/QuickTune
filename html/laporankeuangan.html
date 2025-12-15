@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-CEPAT ADMIN: Laporan Keuangan & POS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Definisi Variabel Warna */
+        :root {
+            --main-color: #FF49C1; /* Pink Magenta */
+            --second-color: #6A1452; /* Ungu Tua */
+            --color3: #efe8e0; /* Off-White/Background Kontras */
+            --background-contrast: #f5f0ff; /* Background Utama Lebih Terang */
+            --white: #FFFFFF;
+            --sub-nav-color: #581144;
+            
+            /* Warna Metrik/Status */
+            --metric-bg: #8E44AD; /* Ungu untuk Kartu Metrik */
+            --metric-accent: #2980B9; /* Biru untuk Kartu Transaksi */
+            --metric-green: #27AE60; /* Hijau untuk Kartu Pembayaran */
+            --metric-red: #C0392B; /* Merah untuk Pendapatan Bulan Lalu */
+        }
+
+        /* Reset Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-contrast);
+            color: #333;
+            margin: 0; 
+        }
+
+        /* Struktur Utama Dashboard */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%; 
+            margin: 0; 
+            background-color: var(--white);
+        }
+
+        /* 1. Sidebar (Sama seperti sebelumnya) */
+        .sidebar {
+            width: 250px;
+            background-color: var(--second-color);
+            color: var(--white);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 10px;
+            color: var(--main-color);
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--white);
+            transition: background-color 0.3s;
+            font-size: 1.05rem;
+        }
+
+        .nav-item a i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover a:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Menu yang aktif pada halaman ini */
+        .nav-item.active a {
+            background-color: var(--main-color);
+            font-weight: 600;
+        }
+        
+        /* Hilangkan sub-nav style untuk halaman ini */
+        .sub-nav-item a {
+            padding-left: 45px !important;
+            background-color: transparent !important;
+            font-size: 0.95rem !important;
+        }
+        
+        .sidebar-footer {
+            padding: 20px;
+            background-color: #44113E;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: auto; 
+        }
+
+        /* 2. Main Content & Header */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: var(--color3); 
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 1.7rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-header h2 i {
+            margin-right: 10px;
+            color: var(--main-color); 
+        }
+
+        .header-divider {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--main-color);
+            margin: 5px 0 30px 0;
+        }
+
+        /* 3. Metrik Cards (Summary) */
+        .summary-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-info h3 {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .metric-info p {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .metric-info small {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--metric-green);
+        }
+
+        .metric-icon {
+            font-size: 2.5rem;
+            color: var(--metric-bg);
+            opacity: 0.8;
+        }
+
+        /* Cards Warna Spesifik */
+        .metric-card.daily .metric-icon { color: var(--main-color); }
+        .metric-card.monthly .metric-icon { color: var(--second-color); }
+        .metric-card.transactions .metric-icon { color: var(--metric-accent); }
+        .metric-card.cash .metric-icon { color: var(--metric-green); }
+
+        /* 4. Detail & Visualisasi */
+        .detail-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Grafik 2/3, Detail Pembayaran 1/3 */
+            gap: 30px;
+        }
+        
+        /* Area Grafik */
+        .chart-container {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container h3 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--color3);
+            padding-bottom: 10px;
+        }
+
+        /* Placeholder untuk Grafik (Simulasi) */
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(135deg, var(--main-color), var(--second-color));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        /* Detail Pembayaran */
+        .payment-detail {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .payment-detail h3 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--color3);
+            padding-bottom: 10px;
+        }
+
+        .payment-method {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .payment-method:last-child {
+            border-bottom: none;
+            font-weight: bold;
+        }
+        
+        .method-name {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .method-value {
+            font-weight: 600;
+            color: var(--second-color);
+        }
+
+        /* Media Query */
+        @media (max-width: 1024px) {
+            .detail-section {
+                grid-template-columns: 1fr; /* Stack di bawah tablet */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .nav-menu ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+
+            .sidebar-footer {
+                display: none; 
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+            
+            .summary-metrics {
+                grid-template-columns: 1fr; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">K-CEPAT ADMIN</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-bed"></i> Room Management</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a href="#">Status Real-Time</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a href="#">Update Status</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="#"><i class="fas fa-cash-register"></i> POS & Transaksi</a>
+                    </li>
+                    <li class="nav-item sub-nav-item active">
+                        <a href="#">Laporan Keuangan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-tags"></i> Pricing & Promo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-chart-bar"></i> Laporan Analitik</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-cog"></i> Pengaturan</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                Kasir Shift Sore
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-area-report">
+                <section class="report-header">
+                    <div class="section-header">
+                        <h2><i class="fas fa-chart-line"></i> Laporan Keuangan & POS</h2>
+                        <span class="header-divider"></span>
+                        <p class="subtitle">Ringkasan pendapatan, transaksi, dan metode pembayaran periode berjalan.</p>
+                    </div>
+                </section>
+                
+                <section class="summary-metrics">
+                    
+                    <div class="metric-card daily">
+                        <div class="metric-info">
+                            <h3>PENDAPATAN HARI INI</h3>
+                            <p>Rp 1.550.000</p>
+                            <small>+12% dari kemarin</small>
+                        </div>
+                        <i class="fas fa-wallet metric-icon"></i>
+                    </div>
+
+                    <div class="metric-card monthly">
+                        <div class="metric-info">
+                            <h3>PENDAPATAN BULAN INI</h3>
+                            <p>Rp 35.700.000</p>
+                            <small>+5% dari bulan lalu</small>
+                        </div>
+                        <i class="fas fa-calendar-alt metric-icon"></i>
+                    </div>
+
+                    <div class="metric-card transactions">
+                        <div class="metric-info">
+                            <h3>JUMLAH TRANSAKSI (Bulan Ini)</h3>
+                            <p>345 Transaksi</p>
+                            <small>Rata-rata: Rp 103.478/transaksi</small>
+                        </div>
+                        <i class="fas fa-exchange-alt metric-icon"></i>
+                    </div>
+
+                    <div class="metric-card cash">
+                        <div class="metric-info">
+                            <h3>SHIFT SORE (Saat Ini)</h3>
+                            <p>Rp 560.000</p>
+                            <small>Belum disetor</small>
+                        </div>
+                        <i class="fas fa-cash-register metric-icon"></i>
+                    </div>
+
+                </section>
+
+                <section class="detail-section">
+                    
+                    <div class="chart-container">
+                        <h3><i class="fas fa-chart-bar"></i> Grafik Pendapatan Bulanan</h3>
+                        <div class="chart-placeholder">
+                            Placeholder Grafik (Menggunakan Chart.js atau sejenisnya)
+                        </div>
+                    </div>
+                    
+                    <div class="payment-detail">
+                        <h3><i class="fas fa-credit-card"></i> Metode Pembayaran</h3>
+                        <div class="payment-method">
+                            <span class="method-name">Tunai</span>
+                            <span class="method-value">45% (Rp 16.065.000)</span>
+                        </div>
+                        <div class="payment-method">
+                            <span class="method-name">Transfer Bank</span>
+                            <span class="method-value">30% (Rp 10.710.000)</span>
+                        </div>
+                        <div class="payment-method">
+                            <span class="method-name">E-Wallet (OVO/Gopay)</span>
+                            <span class="method-value">20% (Rp 7.140.000)</span>
+                        </div>
+                        <div class="payment-method">
+                            <span class="method-name">Kartu Debit/Kredit</span>
+                            <span class="method-value">5% (Rp 1.785.000)</span>
+                        </div>
+                        <div class="payment-method">
+                            <span class="method-name">TOTAL</span>
+                            <span class="method-value">100% (Rp 35.700.000)</span>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+</body>
+</html>

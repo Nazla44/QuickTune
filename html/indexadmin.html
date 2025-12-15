@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickTune Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Definisi Variabel Warna */
+        :root {
+            --main-color: #FF49C1;
+            --second-color: #6A1452;
+            --color3: #efe8e0;
+            --home-color: linear-gradient(
+                135deg,
+                #FFF7AD, 
+                #FFB3AE, 
+                #FF49C1, 
+                #6A1452, 
+                #44113E 
+            );
+            --background-contrast: #f5f0ff;
+            --card-gradient: linear-gradient(90deg, #FFB3AE, var(--main-color), var(--second-color));
+            --button-accent: #a868f0; 
+            --white: #FFFFFF;
+
+            /* Warna Tambahan untuk Status Ruangan */
+            --room-red: #E74C3C; 
+            --room-yellow: #F39C12; 
+            --room-green: #2ECC71; 
+            --room-blue-purple: var(--second-color); 
+        }
+
+        /* Reset Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-contrast);
+            color: #333;
+        }
+
+        /* Struktur Utama Dashboard */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+           
+            margin-left: 0;
+            margin-right: 0;
+            background-color: var(--white);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 1. Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--second-color);
+            color: var(--white);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-item {
+            margin: 10px 0;
+        }
+
+        .nav-item a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--white);
+            transition: background-color 0.3s;
+        }
+
+        .nav-item a i {
+            margin-right: 10px;
+            width: 20px; /* Jaga lebar ikon konsisten */
+            text-align: center;
+        }
+
+        .nav-item:hover a:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: var(--main-color);
+        }
+
+        .nav-item.active a {
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            background-color: #44113E;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: auto; /* Dorong ke bawah */
+        }
+
+        /* 2. Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: var(--white);
+        }
+
+        /* Section Header (judul modul) */
+        .section-header h2 {
+            color: #333;
+            font-size: 1.7rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-header h2 i {
+            margin-right: 10px;
+            color: var(--main-color); /* Warna ikon di header */
+        }
+
+        .section-header .subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        /* Garis pemisah merah */
+        .header-divider {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--main-color);
+            margin: 5px 0 20px 0;
+        }
+
+        .section-divider {
+            margin: 30px 0;
+            height: 2px;
+            background-color: var(--main-color);
+            border: none;
+        }
+
+        /* 3. Room Status Cards */
+        .room-status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .room-card {
+            color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            min-height: 150px;
+            position: relative;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .room-number {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .status-detail, .duration-detail, .booking-detail, .checkin-info {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .status-detail, .duration-detail {
+            line-height: 1.5;
+        }
+
+        .status-label, .duration-label {
+            font-weight: normal;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: block;
+        }
+
+        /* Warna Kartu Sesuai Status */
+        .card-red {
+            background-color: var(--room-red); 
+        }
+
+        .card-yellow {
+            background-color: var(--room-yellow); 
+            justify-content: space-between;
+        }
+
+        .card-green {
+            background-color: var(--room-green); 
+        }
+
+        .card-blue-purple {
+            background-color: var(--room-blue-purple); 
+        }
+
+        .action-button {
+            background-color: var(--white);
+            color: var(--room-yellow);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            align-self: flex-start;
+            margin-top: auto; 
+            transition: all 0.2s;
+        }
+
+        .action-button:hover {
+            background-color: var(--color3);
+            transform: translateY(-1px);
+        }
+
+        .action-button i {
+            margin-right: 5px;
+        }
+
+        /* 4. POS Section 
+        .pos-transaction-section .section-header h2 {
+             font-size: 1.5rem;
+        }
+        
+        .pos-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .pos-link-item {
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 10px 0;
+            font-weight: 600;
+            color: #333; Warna default
+            position: relative;
+        }
+
+        .pos-link-item:first-child {
+            color: var(--second-color);
+        }
+        
+        Garis bawah pada POS F&B 
+        .pos-link-item:first-child::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--main-color);
+        }
+
+        .report-link {
+            color: var(--room-blue-purple);
+        }*/
+
+        /* Media Query untuk Responsif */
+        @media (max-width: 1024px) {
+            .room-status-grid {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+                max-width: 100%;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding: 10px 0;
+            }
+
+            .logo {
+                padding: 10px 20px;
+                border-bottom: none;
+            }
+            
+            .nav-menu ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                padding: 0 10px;
+            }
+
+            .nav-item {
+                margin: 5px;
+            }
+
+            .nav-item a {
+                padding: 8px 10px;
+            }
+
+            .sidebar-footer {
+                display: none; 
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .room-status-grid {
+                grid-template-columns: 1fr; 
+            }
+            
+            .pos-links {
+                flex-direction: column;
+            }
+            
+            .pos-link-item {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">K-CEPAT ADMIN</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li class="nav-item active">
+                        <a href="#"><i class="fas fa-bed"></i> Room Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-cash-register"></i> POS & Transaksi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-tags"></i> Pricing & Promo</a>
+                    </li>
+                    <!--<li class="nav-item">
+                        <a href="#"><i class="fas fa-chart-bar"></i> Laporan Analitik</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"><i class="fas fa-cog"></i> Pengaturan</a>
+                    </li>-->
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                Kasir Shift Sore
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section class="room-management-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bed"></i> Room Management</h2>
+                    <span class="header-divider"></span>
+                    <p class="subtitle">Tampilan ini merefleksikan status ruangan secara "real-time".</p>
+                </div>
+            
+                <section class="room-status-grid">
+                    <div class="room-card card-red">
+                        <h3 class="room-number">Bronze</h3>
+                        <div class="status-detail">
+                            Selesai: 22:30
+                        </div>
+                        <div class="duration-detail">
+                            Durasi: 2 Jam
+                        </div>
+                    </div>
+
+                    <div class="room-card card-yellow">
+                        <h3 class="room-number">Silver</h3>
+                        <div class="status-detail">
+                            Target Bersih: 20:30
+                        </div>
+                        <button class="action-button"><i class="fas fa-check"></i> Selesai</button>
+                    </div>
+
+                    <div class="room-card card-green">
+                        <h3 class="room-number">Platinum</h3>
+                        <div class="status-detail">
+                            Status: KOSONG
+                        </div>
+                        <div class="booking-detail">
+                            Booking Berikutnya: -
+                        </div>
+                    </div>
+
+                    <div class="room-card card-blue-purple">
+                        <h3 class="room-number">VIP</h3>
+                        <div class="status-detail">
+                            Check-in: 23:00
+                        </div>
+                        <div class="checkin-info">
+                            Oleh: Pelanggan Online
+                        </div>
+                    </div>
+                </section>
+            </section>
+            
+            <hr class="section-divider">
+
+            <!--<section class="pos-transaction-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cash-register"></i> POS (Point of Sale) Sederhana & Laporan Transaksi</h2>
+                    <span class="header-divider"></span>
+                    <p class="subtitle">Modul untuk mencatat pemesanan F&B dan Laporan Shift Kasir otomatis.</p>
+                </div>
+                
+                <div class="pos-links">
+                    <a href="#" class="pos-link-item">POS F&B & Tagihan Ruangan</a>
+                    <a href="#" class="pos-link-item report-link">Laporan Shift Anda (20:00 - Sekarang)</a>
+                </div>
+            </section>-->
+
+        </main>
+    </div>
+</body>
+</html>
