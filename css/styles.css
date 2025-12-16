@@ -186,36 +186,80 @@ header.active .navbar a{
 
 /* 2. KELAS GAMBAR (DIKOREKSI AGAR MENGGUNAKAN .home-image) */
 .home-image { 
-    flex: 1 1 17rem; /* Memberi basis lebar yang lebih kecil untuk gambar */
+    flex: 1.2 1 22rem;   /* Lebih besar dari teks */
     display: flex;
-    justify-content: flex-end; /* Memindahkan gambar ke kanan */
+    justify-content: flex-end;
     align-items: center;
 }
 
 .home-image img {
-    max-width: 90%; 
-    height: 350px; 
-    object-fit: cover;
-    border-radius: 50%; /* Bentuk Lingkaran */
-    transition: all 0.4s ease-in-out; 
-    
-    /* Efek Timbul / Glow dengan Multiple Box Shadows */
+    width: 520px;        /* AWALNYA 360px */
+    max-width: 100%;
+    border-radius: 50%;
+    border: 8px solid rgba(255,255,255,0.45);
     box-shadow: 
-        0 0 15px rgba(255, 73, 193, 0.7), /* Magenta Glow */
-        0 0 30px rgba(106, 20, 82, 0.8),  /* Ungu Tua Glow */
-        0 15px 40px rgba(0, 0, 0, 0.5);   /* Bayangan Kedalaman */
-        
-    /* Border Menarik */
-    border: 6px solid var(--color-magenta); 
+        0 25px 50px rgba(0,0,0,0.3),
+        0 0 0 12px rgba(255, 73, 193, 0.15);
+    transition: 0.4s ease;
 }
 
-/* Efek Zoom saat Kursor Diarahkan (Hover) */
 .home-image img:hover {
-    transform: scale(1.05) rotate(1deg);
-    box-shadow: 
-        0 0 25px var(--color-light-yellow), 
-        0 0 50px var(--color-magenta),
-        0 20px 50px rgba(0, 0, 0, 0.7);
+    transform: scale(1.08) rotate(1deg);
+}
+
+@media (max-width: 900px) {
+
+    .home {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 100px 20px 50px;
+    }
+
+    .home-text {
+        flex: none;
+    }
+
+    .home-text span,
+    .home-text h1,
+    .home-text p {
+        margin-left: 0;
+    }
+
+    .home-buttons {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .home-image {
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .home-image img {
+        width: 260px;
+    }
+}
+
+.welcome {
+    color: #fff;
+    letter-spacing: 2px;
+    font-size: 14px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.title {
+    font-size: 52px;
+    font-weight: 800;
+    margin: 10px 0;
+}
+
+.subtitle {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 450px;
+    opacity: 0.95;
 }
 
 /* kategory */
@@ -229,31 +273,31 @@ header.active .navbar a{
   color: inherit;
 }
 .category-grid {
-  margin-top: 0;
+  margin-top: 20px;
   padding: 10px 0;
   display: flex;
-  gap: 20px;
-  /*grid-template-columns: 225px 225px 225.275px;*/
-  justify-content: space-between;
-  align-items: stretch;
+  gap: 24px;
+  justify-content: center;
+  align-items: stretch; /* INI PENTING */
 }
 .category-card {
-  margin-top: 0;
-  padding-top: 20px;
-  text-align: center;
   flex: 1 1 0;
-    min-height: 350px;
-    display: flex;
-    flex-direction: column;
+  max-width: 260px;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .category-card img {
-    order: 1;
-  margin-top: 0;  
-  margin-bottom: 15px;
-  border-radius: 2rem;
   width: 100%;
-  aspect-ratio: 4/5;
+  height: 380px;
   object-fit: cover;
+  border-radius: 2rem;
+  margin-bottom: 12px; /* JARAK DEKAT DENGAN JUDUL */
+}
+.category-card:hover img {
+  transform: scale(1.03);
+  transition: 0.3s ease;
 }
 .category-title {
   text-align: center;
@@ -268,14 +312,13 @@ header.active .navbar a{
 }
 
 .category-card h4 {
-    order: 2;
-    margin-top: auto;
-  font-size: 1.25rem;
+  margin: 0;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--main-color);
   text-align: center;
-  padding-bottom: 20px;
 }
+
 
 /* Rekomendasi */
 .recipe {
@@ -685,4 +728,24 @@ footer {
     .home-text h1 {
         font-size: 2.4rem;
     }
+}
+@media (max-width: 900px) {
+  .category-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .category-card {
+    max-width: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .category-card {
+    max-width: 100%;
+  }
+
+  .category-card img {
+    height: 320px;
+  }
 }
