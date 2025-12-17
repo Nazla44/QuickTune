@@ -207,6 +207,11 @@
             min-height: 18px; /* Jaga konsistensi tinggi kartu */
         }
         
+        .room-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
         /* Button Update */
         .action-button-group {
             margin-top: auto; /* Dorong ke bawah */
@@ -323,9 +328,11 @@
                             <span class="status-dot"></span> Tersedia
                         </div>
                         <div class="status-detail">Siap untuk Check-In.</div>
+                        <a href="updateroom.html" class="update-link">
                         <div class="action-button-group">
                             <button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button>
                         </div>
+                        </a>
                     </div>
                     
                     <div class="room-card type-silver">
@@ -352,16 +359,79 @@
                         </div>
                         <div class="status-detail">Selesai dipakai pukul 10:00.</div>
                         <div class="action-button-group">
-                            <button class="update-button"><i class="fas fa-broom"></i> Bersihkan/Selesai</button>
+                            <button class="update-button"><i class="fas fa-broom"></i> Update Status</button>
                         </div>
                     </div>
                     
-                    <div class="room-card type-silver"><div class="room-header"><h3 class="room-number">S04</h3><span class="room-type">Silver</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
-                    <div class="room-card type-silver"><div class="room-header"><h3 class="room-number">S05</h3><span class="room-type">Silver</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
-                    <div class="room-card type-silver"><div class="room-header"><h3 class="room-number">S06</h3><span class="room-type">Silver</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
-                    <div class="room-card type-silver"><div class="room-header"><h3 class="room-number">S07</h3><span class="room-type">Silver</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
-                    <div class="room-card type-silver"><div class="room-header"><h3 class="room-number">S08</h3><span class="room-type">Silver</span></div><div class="room-status status-booked"><span class="status-dot"></span> Dibooking</div><div class="status-detail">CI: 15:00.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-pen"></i> Update Status</button></div></div>
-                    <div class="room-card type-silver"><div class="room-header"><h3 class="room-number">S09</h3><span class="room-type">Silver</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
+                    <div class="room-card type-silver"><div class="room-header">
+                        <h3 class="room-number">S04</h3>
+                        <span class="room-type">Silver</span>
+                    </div>
+                        <div class="room-status status-available">
+                            <span class="status-dot"></span> Tersedia</div>
+                        <div class="status-detail">Siap untuk Check-In.</div>
+                        <div class="action-button-group">
+                            <button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button>
+                        </div>
+                    </div>
+                    <div class="room-card type-silver"><div class="room-header">
+                        <h3 class="room-number">S05</h3>
+                        <span class="room-type">Silver</span>
+                    </div>
+                    <div class="room-status status-available">
+                        <span class="status-dot"></span> Tersedia</div>
+                        <div class="status-detail">Siap untuk Check-In.</div>
+                        <div class="action-button-group">
+                            <button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button>
+                        </div>
+                    </div>
+                    <div class="room-card type-silver"><div class="room-header">
+                        <h3 class="room-number">S06</h3>
+                        <span class="room-type">Silver</span>
+                    </div>
+                    <div class="room-status status-available">
+                        <span class="status-dot"></span> Tersedia</div>
+                        <div class="status-detail">Siap untuk Check-In.</div>
+                        <div class="action-button-group">
+                            <button class="update-button">
+                                <i class="fas fa-sign-in-alt"></i> Update Status</button>
+                            </div>
+                        </div>
+                    <div class="room-card type-silver">
+                        <div class="room-header">
+                            <h3 class="room-number">S07</h3>
+                            <span class="room-type">Silver</span>
+                        </div>
+                        <div class="room-status status-available">
+                            <span class="status-dot"></span> Tersedia</div>
+                            <div class="status-detail">Siap untuk Check-In.</div>
+                            <div class="action-button-group">
+                                <button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button>
+                            </div>
+                        </div>
+                    <div class="room-card type-silver">
+                        <div class="room-header">
+                            <h3 class="room-number">S08</h3>
+                            <span class="room-type">Silver</span>
+                        </div>
+                        <div class="room-status status-booked">
+                            <span class="status-dot"></span> Dibooking</div>
+                            <div class="status-detail">CI: 15:00.</div>
+                            <div class="action-button-group">
+                                <button class="update-button"><i class="fas fa-pen"></i> Update Status</button>
+                            </div>
+                        </div>
+                    <div class="room-card type-silver"><div class="room-header">
+                        <h3 class="room-number">S09</h3>
+                        <span class="room-type">Silver</span>
+                    </div>
+                    <div class="room-status status-available">
+                        <span class="status-dot"></span> Tersedia</div>
+                        <div class="status-detail">Siap untuk Check-In.</div>
+                        <div class="action-button-group"><button class="update-button">
+                            <i class="fas fa-sign-in-alt"></i> Update Status</button>
+                        </div>
+                    </div>
 
                     <div class="room-card type-platinum">
                         <div class="room-header">
@@ -373,7 +443,7 @@
                         </div>
                         <div class="status-detail">Dipakai hingga 09:30.</div>
                         <div class="action-button-group">
-                            <button class="update-button"><i class="fas fa-broom"></i> Bersihkan/Selesai</button>
+                            <button class="update-button"><i class="fas fa-broom"></i> Update Status</button>
                         </div>
                     </div>
 
@@ -391,9 +461,40 @@
                         </div>
                     </div>
                     
-                    <div class="room-card type-platinum"><div class="room-header"><h3 class="room-number">P03</h3><span class="room-type">Platinum</span></div><div class="room-status status-booked"><span class="status-dot"></span> Dibooking</div><div class="status-detail">Oleh: Pelanggan C.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-pen"></i> Update Status</button></div></div>
-                    <div class="room-card type-platinum"><div class="room-header"><h3 class="room-number">P04</h3><span class="room-type">Platinum</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
-                    <div class="room-card type-platinum"><div class="room-header"><h3 class="room-number">P05</h3><span class="room-type">Platinum</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
+                    <div class="room-card type-platinum">
+                        <div class="room-header">
+                            <h3 class="room-number">P03</h3>
+                            <span class="room-type">Platinum</span>
+                        </div>
+                        <div class="room-status status-booked">
+                            <span class="status-dot"></span> Dibooking</div>
+                            <div class="status-detail">Oleh: Pelanggan C.</div>
+                            <div class="action-button-group">
+                                <button class="update-button"><i class="fas fa-pen"></i> Update Status</button>
+                            </div>
+                        </div>
+                    <div class="room-card type-platinum"><div class="room-header">
+                        <h3 class="room-number">P04</h3>
+                        <span class="room-type">Platinum</span>
+                    </div>
+                    <div class="room-status status-available">
+                        <span class="status-dot"></span> Tersedia</div>
+                        <div class="status-detail">Siap untuk Check-In.</div>
+                        <div class="action-button-group">
+                            <button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button>
+                        </div>
+                    </div>
+                    <div class="room-card type-platinum"><div class="room-header">
+                        <h3 class="room-number">P05</h3>
+                        <span class="room-type">Platinum</span>
+                    </div>
+                    <div class="room-status status-available">
+                        <span class="status-dot"></span> Tersedia</div>
+                        <div class="status-detail">Siap untuk Check-In.</div>
+                        <div class="action-button-group">
+                            <button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button>
+                        </div>
+                    </div>
 
                     <div class="room-card type-vip">
                         <div class="room-header">
@@ -423,9 +524,35 @@
                         </div>
                     </div>
 
-                    <div class="room-card type-vip"><div class="room-header"><h3 class="room-number">V03</h3><span class="room-type">VIP</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
-                    <div class="room-card type-vip"><div class="room-header"><h3 class="room-number">V04</h3><span class="room-type">VIP</span></div><div class="room-status status-cleaning"><span class="status-dot"></span> Perlu Dibersihkan</div><div class="status-detail">Selesai dipakai.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-broom"></i> Bersihkan/Selesai</button></div></div>
-                    <div class="room-card type-vip"><div class="room-header"><h3 class="room-number">V05</h3><span class="room-type">VIP</span></div><div class="room-status status-available"><span class="status-dot"></span> Tersedia</div><div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group"><button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button></div></div>
+                    <div class="room-card type-vip"><div class="room-header">
+                        <h3 class="room-number">V03</h3><span class="room-type">VIP</span></div>
+                        <div class="room-status status-available"><span class="status-dot"></span> Tersedia</div>
+                        <div class="status-detail">Siap untuk Check-In.</div><div class="action-button-group">
+                            <button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button>
+                        </div>
+                    </div>
+                    <div class="room-card type-vip"><div class="room-header">
+                        <h3 class="room-number">V04</h3>
+                        <span class="room-type">VIP</span></div>
+                        <div class="room-status status-cleaning">
+                            <span class="status-dot"></span> Perlu Dibersihkan
+                        </div>
+                        <div class="status-detail">Selesai dipakai.</div>
+                        <div class="action-button-group">
+                            <button class="update-button"><i class="fas fa-broom"></i> Bersihkan/Selesai</button>
+                        </div>
+                    </div>
+                    <div class="room-card type-vip"><div class="room-header">
+                        <h3 class="room-number">V05</h3>
+                        <span class="room-type">VIP</span>
+                    </div>
+                    <div class="room-status status-available">
+                        <span class="status-dot"></span> Tersedia</div>
+                        <div class="status-detail">Siap untuk Check-In.</div>
+                        <div class="action-button-group">
+                            <button class="update-button"><i class="fas fa-sign-in-alt"></i> Update Status</button>
+                        </div>
+                    </div>
                     
                 </section>
             </section>

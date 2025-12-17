@@ -179,8 +179,14 @@
             min-height: 150px;
             position: relative;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            height: 100%;
         }
 
+        .room-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
         .room-number {
             font-size: 1.5rem;
             margin-bottom: 10px;
@@ -244,6 +250,7 @@
             margin-right: 5px;
         }
 
+        .
         /* 4. POS Section 
         .pos-transaction-section .section-header h2 {
              font-size: 1.5rem;
@@ -347,14 +354,14 @@
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
-            <div class="logo">K-CEPAT ADMIN</div>
+            <div class="logo">QuickTune Admin</div>
             <nav class="nav-menu">
                 <ul>
                     <li class="nav-item active">
                         <a href="#"><i class="fas fa-bed"></i> Room Management</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#"><i class="fas fa-cash-register"></i> POS & Transaksi</a>
+                        <a href="#"><i class="fas fa-cash-register"></i> POS & Laporan Transaksi</a>
                     </li>
                     <li class="nav-item">
                         <a href="#"><i class="fas fa-tags"></i> Pricing & Promo</a>
@@ -381,6 +388,7 @@
                 </div>
             
                 <section class="room-status-grid">
+                    <a href="detailroomadmin.html" class="room-link">
                     <div class="room-card card-red">
                         <h3 class="room-number">Bronze</h3>
                         <div class="status-detail">
@@ -390,7 +398,9 @@
                             Durasi: 2 Jam
                         </div>
                     </div>
+                    </a>
 
+                    <a href="detailroomadmin.html" class="room-link">
                     <div class="room-card card-yellow">
                         <h3 class="room-number">Silver</h3>
                         <div class="status-detail">
@@ -398,7 +408,9 @@
                         </div>
                         <button class="action-button"><i class="fas fa-check"></i> Selesai</button>
                     </div>
+                    </a>
 
+                    <a href="detailroomadmin.html" class="room-link">
                     <div class="room-card card-green">
                         <h3 class="room-number">Platinum</h3>
                         <div class="status-detail">
@@ -408,7 +420,9 @@
                             Booking Berikutnya: -
                         </div>
                     </div>
+                    </a>
 
+                    <a href="detailroomadmin.html" class="room-link">
                     <div class="room-card card-blue-purple">
                         <h3 class="room-number">VIP</h3>
                         <div class="status-detail">
@@ -418,6 +432,7 @@
                             Oleh: Pelanggan Online
                         </div>
                     </div>
+                    </a>
                 </section>
             </section>
             
