@@ -244,44 +244,51 @@
             margin-right: 5px;
         }
 
-        /* 4. POS Section 
-        .pos-transaction-section .section-header h2 {
-             font-size: 1.5rem;
-        }
-        
-        .pos-links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+        .pos-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
         }
 
-        .pos-link-item {
-            text-decoration: none;
-            font-size: 1.1rem;
-            padding: 10px 0;
-            font-weight: 600;
-            color: #333; Warna default
-            position: relative;
-        }
-
-        .pos-link-item:first-child {
-            color: var(--second-color);
-        }
-        
-        Garis bawah pada POS F&B 
-        .pos-link-item:first-child::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
+        .pos-left select,
+        .pos-left input {
             width: 100%;
-            height: 3px;
-            background-color: var(--main-color);
+            padding: 12px;
+            margin-bottom: 15px;
         }
 
-        .report-link {
-            color: var(--room-blue-purple);
-        }*/
+        .bill-card,
+        .report-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .bill-card h3,
+        .grand {
+            color: var(--main-color);
+            text-align: center;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 12px;
+            background: var(--main-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .btn-close {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
 
         /* Media Query untuk Responsif */
         @media (max-width: 1024px) {
@@ -351,10 +358,14 @@
             <nav class="nav-menu">
                 <ul>
                     <li class="nav-item active">
-                        <a href="#"><i class="fas fa-bed"></i> Room Management</a>
+                    <a href="#" onclick="showRoom()"> 
+                        <i class="fas fa-bed"></i> Room Management
+                    </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#"><i class="fas fa-cash-register"></i> POS & Transaksi</a>
+                    <a href="#" onclick="showPOS()"> 
+                        <i class="fas fa-cash-register"></i> POS & Transaksi
+                    </a>
                     </li>
                     <li class="nav-item">
                         <a href="#"><i class="fas fa-tags"></i> Pricing & Promo</a>
@@ -372,71 +383,128 @@
             </div>
         </aside>
 
-        <main class="main-content">
-            <section class="room-management-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-bed"></i> Room Management</h2>
-                    <span class="header-divider"></span>
-                    <p class="subtitle">Tampilan ini merefleksikan status ruangan secara "real-time".</p>
-                </div>
-            
-                <section class="room-status-grid">
-                    <div class="room-card card-red">
-                        <h3 class="room-number">Bronze</h3>
-                        <div class="status-detail">
-                            Selesai: 22:30
-                        </div>
-                        <div class="duration-detail">
-                            Durasi: 2 Jam
-                        </div>
+        <section class="room-management-section" id="roomManagement">
+            <main class="main-content">
+                <section class="room-management-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-bed"></i> Room Management</h2>
+                        <span class="header-divider"></span>
+                        <p class="subtitle">Tampilan ini merefleksikan status ruangan secara "real-time".</p>
                     </div>
-
-                    <div class="room-card card-yellow">
-                        <h3 class="room-number">Silver</h3>
-                        <div class="status-detail">
-                            Target Bersih: 20:30
-                        </div>
-                        <button class="action-button"><i class="fas fa-check"></i> Selesai</button>
-                    </div>
-
-                    <div class="room-card card-green">
-                        <h3 class="room-number">Platinum</h3>
-                        <div class="status-detail">
-                            Status: KOSONG
-                        </div>
-                        <div class="booking-detail">
-                            Booking Berikutnya: -
-                        </div>
-                    </div>
-
-                    <div class="room-card card-blue-purple">
-                        <h3 class="room-number">VIP</h3>
-                        <div class="status-detail">
-                            Check-in: 23:00
-                        </div>
-                        <div class="checkin-info">
-                            Oleh: Pelanggan Online
-                        </div>
-                    </div>
-                </section>
-            </section>
-            
-            <hr class="section-divider">
-
-            <!--<section class="pos-transaction-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-cash-register"></i> POS (Point of Sale) Sederhana & Laporan Transaksi</h2>
-                    <span class="header-divider"></span>
-                    <p class="subtitle">Modul untuk mencatat pemesanan F&B dan Laporan Shift Kasir otomatis.</p>
-                </div>
                 
-                <div class="pos-links">
-                    <a href="#" class="pos-link-item">POS F&B & Tagihan Ruangan</a>
-                    <a href="#" class="pos-link-item report-link">Laporan Shift Anda (20:00 - Sekarang)</a>
-                </div>
-            </section>-->
+                    <section class="room-status-grid">
+                        <div class="room-card card-red">
+                            <h3 class="room-number">Bronze</h3>
+                            <div class="status-detail">
+                                Selesai: 22:30
+                            </div>
+                            <div class="duration-detail">
+                                Durasi: 2 Jam
+                            </div>
+                        </div>
 
-        </main>
+                        <div class="room-card card-yellow">
+                            <h3 class="room-number">Silver</h3>
+                            <div class="status-detail">
+                                Target Bersih: 20:30
+                            </div>
+                            <button class="action-button"><i class="fas fa-check"></i> Selesai</button>
+                        </div>
+
+                        <div class="room-card card-green">
+                            <h3 class="room-number">Platinum</h3>
+                            <div class="status-detail">
+                                Status: KOSONG
+                            </div>
+                            <div class="booking-detail">
+                                Booking Berikutnya: -
+                            </div>
+                        </div>
+
+                        <div class="room-card card-blue-purple">
+                            <h3 class="room-number">VIP</h3>
+                            <div class="status-detail">
+                                Check-in: 23:00
+                            </div>
+                            <div class="checkin-info">
+                                Oleh: Pelanggan Online
+                            </div>
+                        </div>
+                    </section>
+                </section>
+                
+                <hr class="section-divider">
+            </main>
+        </section>
+
+        <section class="pos-section" id="posSection" style="display:none;">
+            <div class="section-header">
+                <h2><i class="fas fa-cash-register"></i> POS (Point of Sale)</h2>
+                <span class="header-divider"></span>
+                <p class="subtitle">Modul transaksi & laporan kasir.</p>
+            </div>
+
+            <div class="pos-grid">
+
+                <!-- POS KIRI -->
+                <div class="pos-left">
+                    <label>Ruangan Aktif</label>
+                    <select>
+                        <option>R01 (Small) - Rp 150.000</option>
+                    </select>
+
+                    <input type="text" placeholder="Tambah Item F&B">
+
+                    <div class="bill-card">
+                        <p>Biaya Ruangan <span>Rp 120.000</span></p>
+                        <p>F&B Tambahan <span>Rp 45.000</span></p>
+                        <p class="discount">Diskon <span>- Rp 10.000</span></p>
+                        <hr>
+                        <h3>TOTAL Rp 155.000</h3>
+                    </div>
+
+                    <button class="btn-pay">Proses Pembayaran</button>
+                </div>
+
+                <!-- LAPORAN KANAN -->
+                <div class="pos-right">
+                    <h3>Laporan Shift</h3>
+
+                    <div class="report-card">
+                        <p>Total Ruangan <span>Rp 750.000</span></p>
+                        <p>Total F&B <span>Rp 280.000</span></p>
+                        <p>Cash <span>Rp 530.000</span></p>
+                        <p>QRIS <span>Rp 500.000</span></p>
+                        <hr>
+                        <h3 class="grand">Rp 1.030.000</h3>
+                    </div>
+
+                    <button class="btn-close">Tutup Shift</button>
+                </div>
+            </div>
+        </section>
     </div>
 </body>
+<script>
+function showPOS() {
+    document.getElementById('roomManagement').style.display = 'none';
+    document.getElementById('posSection').style.display = 'block';
+
+    setActiveMenu(1);
+}
+
+function showRoom() {
+    document.getElementById('posSection').style.display = 'none';
+    document.getElementById('roomManagement').style.display = 'block';
+
+    setActiveMenu(0);
+}
+
+function setActiveMenu(index) {
+    const items = document.querySelectorAll('.nav-item');
+    items.forEach(item => item.classList.remove('active'));
+    items[index].classList.add('active');
+}
+</script>
+
 </html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin POS - QuickTune</title>
+  <link rel="stylesheet" href="../css/posadmin.css">
+</head>
+<body>
+
+<div class="admin-wrapper">
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <header class="page-header">
+      <h1>POS (Point of Sale) & Laporan Transaksi</h1>
+      <p>Modul untuk mencatat pemesanan F&B dan Laporan Shift Kasir otomatis.</p>
+    </header>
+
+    <section class="pos-grid">
+
+      <!-- POS KIRI -->
+      <div class="pos-left">
+        <h3>POS F&B & Tagihan Ruangan</h3>
+
+        <label>Ruangan Aktif:</label>
+        <select>
+          <option>R01 (Small) - Rp 150.000</option>
+          <option>R02 (Medium) - Rp 200.000</option>
+        </select>
+
+        <input type="text" placeholder="Tambah Item F&B">
+
+        <div class="bill-card">
+          <div class="bill-row">
+            <span>Biaya Ruangan (Otomatis)</span>
+            <span>Rp 120.000</span>
+          </div>
+          <div class="bill-row">
+            <span>F&B Tambahan</span>
+            <span>Rp 45.000</span>
+          </div>
+          <div class="bill-row discount">
+            <span>Diskon Promo/Voucher</span>
+            <span>- Rp 10.000</span>
+          </div>
+
+          <hr>
+
+          <div class="bill-total">
+            TOTAL AKHIR Rp 155.000
+          </div>
+        </div>
+
+        <button class="btn-pay">Proses Pembayaran</button>
+      </div>
+
+      <!-- LAPORAN KANAN -->
+      <div class="pos-right">
+        <h3>Laporan Shift Anda (20:00 - Sekarang)</h3>
+
+        <div class="report-card">
+          <div class="report-row">
+            <span>Total Transaksi Ruangan</span>
+            <span>Rp 750.000</span>
+          </div>
+          <div class="report-row">
+            <span>Total Transaksi F&B</span>
+            <span>Rp 280.000</span>
+          </div>
+          <div class="report-row">
+            <span>Pembayaran Cash</span>
+            <span>Rp 530.000</span>
+          </div>
+          <div class="report-row">
+            <span>Pembayaran Digital</span>
+            <span>Rp 500.000</span>
+          </div>
+
+          <hr>
+
+          <div class="grand-total">
+            GRAND TOTAL SHIFT Rp 1.030.000
+          </div>
+        </div>
+
+        <button class="btn-close">
+          Tutup Shift & Cetak Laporan
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+</div>
+
+</body>
+</html>
