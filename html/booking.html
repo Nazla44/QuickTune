@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickTune - Choose a Room</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a0033 0%, #000066 100%);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 50px 20px;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .recipe-container { max-width: 1200px; margin: 0 auto; }
+        .recipe-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #fff, #FF49C1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px;
+        }
+
+        .room-card {
+            position: relative;
+            height: 380px;
+            border-radius: 25px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            transition: 0.4s;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 10%, transparent 70%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 25px;
+        }
+
+        .booking-btn {
+            background: #FF49C1;
+            color: white;
+            padding: 10px;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* --- MODAL STYLE --- */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #8000FF; 
+            padding: 30px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 420px;
+            position: relative;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+            /* Hapus fitur geser (scrollbar) di pojok kanan secara visual */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .modal-content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .modal-label {
+            display: block;
+            font-size: 14px;
+            color: #FFFFFF; 
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .custom-input {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .custom-input option { background: #8000FF; }
+
+        .duration-container { display: flex; gap: 8px; margin-bottom: 15px; }
+        .duration-btn {
+            flex: 1;
+            padding: 10px;
+            background: #4B0099;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .duration-btn.active { background: #A64DFF; box-shadow: 0 0 10px rgba(166,77,255,0.5); }
+
+        .price-details {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 15px;
+            font-size: 14px;
+        }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 5px; color: white; }
+        .total-text { font-size: 22px; font-weight: bold; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
+
+        .confirm-btn {
+            background: #FF00E5;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .confirm-btn:hover { transform: scale(1.02); background: #ff33eb; }
+
+        .close-btn { position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer; color: white; }
+
+        .silver { background-image: url('https://images.unsplash.com/photo-1514525253344-f814d0c9e58a?auto=format&fit=crop&w=500'); }
+        .platinum { background-image: url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=500'); }
+        .vip { background-image: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=500'); }
+        .vvip { background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500'); }
+    </style>
+</head>
+<body>
+
+    <div class="recipe-container">
+        <h1 class="recipe-title">Type Bronze</h1>
+        <div class="room-grid">
+            <div class="room-card silver" onclick="openBookingModal('Mini', 60000)">
+                <div class="overlay"><h2>Mini</h2><div class="booking-btn">Booking Now</div></div>
+            </div>
+            <div class="room-card platinum" onclick="openBookingModal('Standar', 85000)">
+                <div class="overlay"><h2>Standar</h2><div class="booking-btn">Booking Now</div></div>
+            </div>
+            <div class="room-card vip" onclick="openBookingModal('Deluxe', 120000)">
+                <div class="overlay"><h2>Deluxe</h2><div class="booking-btn">Booking Now</div></div>
+            </div>
+            <div class="room-card vvip" onclick="openBookingModal('Party', 200000)">
+                <div class="overlay"><h2>Party</h2><div class="booking-btn">Booking Now</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeBookingModal()">&times;</span>
+            <h2 style="margin:0; color: white;">Booking <span id="modal-room-name" style="color:#FF49C1"></span></h2>
+            <p style="font-size: 13px; color: #EEE; margin-bottom: 20px;">Enjoy your sing</p>
+
+            <form id="bookingForm">
+                <label class="modal-label">Full Name</label>
+                <input type="text" id="fullName" placeholder="Nama Lengkap" class="custom-input" required>
+
+                <label class="modal-label">Email Address</label>
+                <input type="email" id="email" placeholder="email@contoh.com" class="custom-input" required>
+
+                <label class="modal-label">Date</label>
+                <input type="date" id="date" class="custom-input" required>
+
+                <label class="modal-label">Duration (hours)</label>
+                <div class="duration-container">
+                    <button type="button" class="duration-btn active" onclick="updateDuration(1, this)">1h</button>
+                    <button type="button" class="duration-btn" onclick="updateDuration(2, this)">2h</button>
+                    <button type="button" class="duration-btn" onclick="updateDuration(3, this)">3h</button>
+                    <button type="button" class="duration-btn" onclick="updateDuration(4, this)">4h</button>
+                </div>
+
+                <label class="modal-label">Pilih Promo</label>
+                <select id="promoSelect" class="custom-input" onchange="updatePrice()">
+                    <option value="0">Tidak Menggunakan Promo</option>
+                    <option value="18000">Happy Hour Diskon Ruangan 30%</option>
+                    <option value="12000">Promo Bulanan Desember</option>
+                    <option value="0">Christmas Carol Package-Gratis 1 Jam + 2 Minuman</option>
+                     <option value="30000">New Year's Eve Party</option>
+                </select>
+
+                <div class="price-details">
+                    <div class="price-row">
+                        <span id="price-calc-text">1 jam x Rp 0</span>
+                        <span id="base-price">Rp 0</span>
+                    </div>
+                    <div class="price-row" style="color: #00FFCC;">
+                        <span>Diskon</span>
+                        <span id="discount-amount">- Rp 0</span>
+                    </div>
+                    <div class="price-row total-text">
+                        <span>Total Pembayaran</span>
+                        <span id="total-price">Rp 0</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="confirm-btn">Lanjut Pembayaran</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentPricePerHour = 0;
+        let selectedHours = 1;
+        let selectedRoom = "";
+
+        function openBookingModal(roomName, price) {
+            selectedRoom = roomName;
+            currentPricePerHour = price;
+            document.getElementById('modal-room-name').innerText = roomName;
+            document.getElementById('bookingModal').style.display = 'flex';
+            updatePrice();
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+        }
+
+        function updateDuration(h, btn) {
+            selectedHours = h;
+            document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updatePrice();
+        }
+
+        function updatePrice() {
+            const subtotal = currentPricePerHour * selectedHours;
+            const discount = parseInt(document.getElementById('promoSelect').value);
+            const total = subtotal - discount;
+
+            document.getElementById('price-calc-text').innerText = `${selectedHours} jam x Rp ${currentPricePerHour.toLocaleString('id-ID')}`;
+            document.getElementById('base-price').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
+            document.getElementById('discount-amount').innerText = `- Rp ${discount.toLocaleString('id-ID')}`;
+            document.getElementById('total-price').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const subtotal = currentPricePerHour * selectedHours;
+            const discount = parseInt(document.getElementById('promoSelect').value);
+            const promoName = document.getElementById('promoSelect').options[document.getElementById('promoSelect').selectedIndex].text;
+
+            const bookingData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                room: selectedRoom,
+                date: document.getElementById('date').value,
+                duration: selectedHours,
+                basePrice: subtotal,
+                discountAmount: discount,
+                promoName: promoName,
+                totalPrice: subtotal - discount,
+                paymentMethod: "Bank Transfer"
+            };
+
+            localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+            window.location.href = 'payment.html'; 
+        });
+    
+</script>
+</body>
+</html>
