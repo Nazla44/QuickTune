@@ -15,7 +15,7 @@
 <body>
 <!-- Navbar -->
 <header>
-    <a href="#" class="logo"><img src="../assets/karaoke.png" alt="">QuickTune</a>
+    <a href="#" class="logo"><img src="../img/logo.png" alt="">QuickTune</a>
     <div class="bx bx-menu" id="menu-icon"></div>
     <ul class="navbar">
         <li><a href="#home">Home</a></li>
@@ -81,34 +81,40 @@
 
 <!-- Resep -->
 <section class="recipe" id="recipe">
-  <div class="recipe-container recipe-container">
-    <h2 class="recipe-title">Choose a Room</h2>
-    <p class="recipe-subtitle">
-      Pilih Ruanganmu, Cek Slot Waktu Real Time<br>Temukan Ruangan yang Cocok untuk Mood Kamu
-    </p>
-    <div class="card-container">
-      <div class="card">
-          <img src="../img/Room1.jpg" alt="">
-          <h5>Silver Room</h5>
-          <div class="time"><i class='bx bxs-stopwatch' ></i> 1 jam</div>
-              <a href="../html/ayamBakar.html" class="view">Booking Now</a>
-      </div>
+    <div class="recipe-container">
+        <h2 class="recipe-title">Choose a Room</h2>
+        <p class="recipe-subtitle">
+            Pilih Ruanganmu, Cek Slot Waktu Real Time<br>
+            Temukan Ruangan yang Cocok untuk Mood Kamu
+        </p>
+        
+        
+        <div class="room-grid">
+            <a href="../html/booking.html" class="room-card silver">
+                <div class="overlay">
+                    <h2 class="room-name">Bronze Room</h2>
+                </div>
+            </a>
 
-      <div class="card">
-          <img src="../img/Room2.jpg" alt="">
-          <h5>Platinum Room</h5>
-          <div class="time"><i class='bx bxs-stopwatch' ></i> 35 menit</div>
-          <a href="../html/CahBrokoli.html" class="view">Lihat resep</a>
-      </div>
-      
-      <div class="card">
-          <img src="../assets/room5.jpeg" alt="">
-          <h5>VIP Room</h5>
-          <div class="time"><i class='bx bxs-stopwatch' ></i> 40 menit</div>
-          <a href="../html/TahuWalik.html" class="view">Lihat resep</a>
-      </div>
+            <a href="../html/booking.html" class="room-card platinum">
+                <div class="overlay">
+                    <h2 class="room-name">Silver Room</h2>
+                </div>
+            </a>
+
+            <a href="../html/booking.html" class="room-card gold">
+                <div class="overlay">
+                    <h2 class="room-name">Gold Room</h2>
+                </div>
+            </a>
+
+            <a href="../html/booking.html" class="room-card vvip">
+                <div class="overlay">
+                    <h2 class="room-name">Platinum Room</h2>
+                </div>
+            </a>
+        </div>
     </div>
-  </div>
 </section>
 
 
