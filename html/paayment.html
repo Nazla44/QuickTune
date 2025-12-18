@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran QuickTune</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+
+        /* Modern card style */
+        .payment-option {
+            transition: all .25s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(12px);
+        }
+        .payment-option:hover {
+            transform: translateY(-3px);
+            border-color: #d400ff;
+            box-shadow: 0 0 15px rgba(212, 0, 255, 0.6);
+        }
+        .payment-option.selected {
+            border-color: #ff00a6;
+            background: rgba(255, 0, 161, 0.15);
+            box-shadow: 0 0 20px rgba(255, 0, 161, 0.8);
+        }
+
+        /* Tombol bayar */
+        .pay-btn {
+            background: linear-gradient(135deg, #ff0080, #9d00ff);
+            box-shadow: 0 4px 20px rgba(255, 0, 128, 0.4);
+            transition: all .25s ease;
+        }
+        .pay-btn:hover {
+            scale: 1.03;
+            box-shadow: 0 6px 25px rgba(255, 0, 128, 0.6);
+        }
+        .pay-btn:disabled {
+            background: #555;
+            box-shadow: none;
+            scale: 1.0;
+            cursor: not-allowed;
+        }
+
+        /* Outer container glass */
+        .payment-container {
+            background: rgba(255, 0, 251, 0.3);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-purple-900 via-fuchsia-900 to-black min-h-screen flex items-center justify-center p-4">
+
+    <div class="payment-container w-full max-w-lg p-7 rounded-2xl">
+
+        <!-- TITLE -->
+        <h2 class="text-4xl font-extrabold text-white mb-6 text-center tracking-wide drop-shadow-lg">
+            Ringkasan Pembayaran
+        </h2>
+
+        <!-- BOOKING SUMMARY -->
+        <div class="bg-black/40 p-5 rounded-xl text-gray-200 shadow-xl border border-white/10">
+            <h3 class="text-xl font-bold text-white border-b border-white/20 pb-2 mb-3">Detail Booking</h3>
+
+            <table class="w-full text-sm space-y-1">
+                <tbody>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Nama Pemesan:</td>
+                        <td id="summary-name" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Ruangan (Tipe):</td>
+                        <td id="summary-roomtype" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Waktu:</td>
+                        <td id="summary-datetime" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Durasi:</td>
+                        <td id="summary-duration" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Harga Dasar:</td>
+                        <td id="summary-baseprice" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10 text-green-400">
+                        <td class="py-1">Diskon (<span id="summary-promo">Promo</span>):</td>
+                        <td id="summary-discount" class="py-1 text-right font-semibold"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="flex justify-between text-2xl font-extrabold text-white pt-4 mt-3 border-t border-white/20">
+                <span>Total Bayar</span>
+                <span id="final-total-price" class="drop-shadow-lg">Rp.0</span>
+            </div>
+        </div>
+
+        <!-- PAYMENT METHOD -->
+        <h3 class="text-xl font-bold text-white mt-7 mb-4">Pilih Metode Pembayaran</h3>
+
+        <div class="grid grid-cols-2 gap-4">
+
+            <div class="payment-option p-5 rounded-xl text-center text-white" data-method="GoPay">
+                <i class='bx bxs-wallet text-4xl mb-2'></i>
+                <p class="font-semibold">GoPay</p>
+            </div>
+
+            <div class="payment-option p-5 rounded-xl text-center text-white" data-method="Bank Transfer">
+                <i class='bx bxs-bank text-4xl mb-2'></i>
+                <p class="font-semibold">Bank Transfer</p>
+            </div>
+
+            <div class="payment-option p-5 rounded-xl text-center text-white" data-method="Credit Card">
+                <i class='bx bxs-credit-card text-4xl mb-2'></i>
+                <p class="font-semibold">Credit Card</p>
+            </div>
+
+            <div class="payment-option p-5 rounded-xl text-center text-white" data-method="E-Wallet Lain">
+                <i class='bx bxs-devices text-4xl mb-2'></i>
+                <p class="font-semibold">E-Wallet Lain</p>
+            </div>
+        </div>
+
+        <!-- PAY BUTTON -->
+        <button id="payButton" class="pay-btn w-full p-4 mt-8 rounded-xl text-white font-bold text-lg">
+            Pilih Metode Pembayaran
+        </button>
+
+    </div>
+
+    <script>
+        const CURRENCY_SYMBOL = 'Rp.';
+        let selectedPaymentMethod = null;
+        let bookingData = null;
+
+        function formatRupiah(number) {
+            if (!number) return '0';
+            return parseFloat(number).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function loadBookingSummary() {
+            const dataString = localStorage.getItem('currentBooking');
+            if (!dataString) {
+                alert('Data pemesanan tidak ditemukan!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            bookingData = JSON.parse(dataString);
+
+            document.getElementById('summary-name').textContent = bookingData.fullName;
+            document.getElementById('summary-roomtype').textContent = `${bookingData.room} (${bookingData.roomType || 'Standard'})`;
+            document.getElementById('summary-datetime').textContent = `${bookingData.date} / ${bookingData.timeSlot}`;
+            document.getElementById('summary-duration').textContent = `${bookingData.duration} jam`;
+            document.getElementById('summary-baseprice').textContent = `${CURRENCY_SYMBOL}${formatRupiah(bookingData.basePrice)}`;
+            document.getElementById('summary-promo').textContent = bookingData.promoName;
+            document.getElementById('summary-discount').textContent = `- ${CURRENCY_SYMBOL}${formatRupiah(bookingData.discountAmount)}`;
+            document.getElementById('final-total-price').textContent = `${CURRENCY_SYMBOL}${formatRupiah(bookingData.totalPrice)}`;
+        }
+
+        function handlePaymentSelection() {
+            const options = document.querySelectorAll('.payment-option');
+            const payButton = document.getElementById('payButton');
+
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    options.forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+
+                    selectedPaymentMethod = option.getAttribute('data-method');
+                    payButton.disabled = false;
+                    payButton.textContent = `Bayar Sekarang dengan ${selectedPaymentMethod}`;
+                });
+            });
+
+           payButton.addEventListener('click', () => {
+    if (selectedPaymentMethod && bookingData) {
+        // Simpan metode pembayaran yang dipilih ke data booking
+        bookingData.paymentMethod = selectedPaymentMethod;
+        localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+        
+        alert(`Pembayaran Berhasil via ${selectedPaymentMethod}!`);
+        // Pindah ke halaman nota
+        window.location.href = 'nota.html'; 
+    }
+});
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBookingSummary();
+            handlePaymentSelection();
+        });
+    </script>
+
+</body>
+</html>
