@@ -658,6 +658,68 @@ footer {
     opacity: 0.8;
 }*/
 
+/* --- Tambahan khusus untuk Choose a Room agar 4 Sejajar --- */
+
+/* 1. Pastikan container grid menggunakan Flexbox */
+.room-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 20px !important;
+    margin-top: 40px !important;
+    flex-wrap: nowrap !important; /* Paksa tetap satu baris */
+}
+
+/* 2. Atur kartu agar memiliki ukuran dan gambar */
+.room-card {
+    flex: 1 !important;
+    height: 400px !important; /* Tinggi kartu */
+    border-radius: 30px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background-size: cover !important;
+    background-position: center !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    text-decoration: none !important;
+    transition: 0.4s ease !important;
+}
+
+/* 3. Masukkan link gambar (Pastikan nama file di folder img sudah benar) */
+.bronze { background-image: url('../assets/room3.jpeg'); }
+.silver { background-image: url('../assets/room6.jpeg'); }
+.gold { background-image: url('../assets/room5.jpeg'); }
+.platinum { background-image: url('../assets/room4.jpeg'); }
+
+/* 4. Overlay agar teks putih terbaca jelas */
+.overlay {
+    width: 100% !important;
+    padding: 25px !important;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)) !important;
+}
+
+.room-name {
+    color: #ffffff !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+
+/* Efek angkat saat mouse menempel */
+.room-card:hover {
+    transform: translateY(-10px) !important;
+}
+
+/* Responsif: Jika layar kekecilan (HP), baru dia turun ke bawah */
+@media (max-width: 991px) {
+    .room-grid {
+        flex-wrap: wrap !important;
+    }
+    .room-card {
+        flex: 1 1 45% !important; /* Jadi 2 baris di HP */
+    }
+}
+
 /* Responsiveness Sederhana */
 @media (max-width: 600px) {
     .footer-grid-final {
