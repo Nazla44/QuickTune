@@ -1,60 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style2.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
-    <title>Ayam rica-rica pedas manis</title>
+    <title>Nota Pembayaran - QuickTune</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
-<body>
-    <header>
-        <button>
-            <a href="../html/OlahanAyam.html">
-                <i class='bx bx-left-arrow-alt' ></i>
-            </a>
-        </button>
-    </header>
-    <div class="container">
-        <div class="recipe-information">
-            <h1>Ayam Rica-rica Pedas Manis</h1>
+<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen p-4">
+
+    <div id="invoice-card" class="bg-white text-slate-800 w-full max-w-md p-8 rounded-lg shadow-2xl">
+        <div class="text-center border-b pb-4 mb-4">
+            <h1 class="text-2xl font-bold text-purple-700">QUICKTUNE INVOICE</h1>
+            <p class="text-sm text-slate-500">Terima kasih telah bernyanyi bersama kami!</p>
         </div>
-        <div class="recipe-step">
-            <h2>Bahan:</h2>
-            <ul class="bahan">
-                <li><span>500 gram ayam, potong menjadi beberapa bagian.</span></li>
-                <li><span>10 cabai rawit merah, iris tipis.</span></li>
-                <li><span>5 cabai merah besar, iris serong.</span></li>
-                <li><span>4 siung bawang putih, cincang halus.</span></li>
-                <li><span>3 cm jahe, memarkan.</span></li>
-                <li><span>2 lembar daun jeruk, buang tulang daunnya.</span></li>
-                <li><span>2 sendok makan saus cabai.</span></li>
-                <li><span>1 sendok makan kecap manis.</span></li>
-                <li><span>1 sendok teh gula pasir.</span></li>
-                <li><span>2 sendok makan saus tomat.</span></li>
-                <li><span>Garam secukupnya.</span></li>
-                <li><span>Minyak untuk menumis</span></li>
-            </ul>
-        </div>
-        <hr>
-        <div class="recipe-step">
-            <h2>Cara Membuat:</h2>
-            <div class="instructions">
-                <div class="item">
-                    <div class="num">1. Panaskan minyak dalam wajan. Tumis bawang putih, jahe, cabai rawit, dan cabai merah besar hingga harum.</div>
-                </div>
-                <div class="item">
-                    <div class="num">2. Masukkan ayam yang sudah dibersihkan, aduk rata dan masak hingga berubah warna.</div>
-                </div>
-                <div class="item">
-                    <div class="num">3. Tuangkan sedikit air, masukkan daun jeruk, dan masak dengan api kecil hingga ayam matang dan bumbu meresap.</div>
-                </div>
-                <div class="item">
-                    <div class="num">4. Ayam rica-rica pedas manis siap disajikan dengan nasi hangat.</div>
-                </div>
+
+        <div class="space-y-3 text-sm">
+            <div class="flex justify-between"><span>No. Antrean:</span><span class="font-bold">#QT-2025</span></div>
+            <div class="flex justify-between"><span>Nama:</span><span id="note-name" class="font-semibold"></span></div>
+            <div class="flex justify-between"><span>Ruangan:</span><span id="note-room" class="font-semibold"></span></div>
+            <div class="flex justify-between"><span>Waktu:</span><span id="note-time" class="font-semibold"></span></div>
+            <div class="flex justify-between"><span>Metode:</span><span id="note-method" class="font-semibold text-blue-600"></span></div>
+            <hr>
+            <div class="flex justify-between text-lg font-bold">
+                <span>Total Bayar:</span>
+                <span id="note-total" class="text-purple-600"></span>
             </div>
         </div>
+
+        <div class="mt-8 space-y-2">
+            <button onclick="window.print()" class="w-full bg-slate-200 py-2 rounded font-semibold hover:bg-slate-300">Cetak PDF</button>
+            <button onclick="window.location.href='index.html'" class="w-full bg-purple-600 text-white py-2 rounded font-semibold hover:bg-purple-700">Kembali ke Home</button>
+        </div>
+        
+        <p id="email-status" class="text-center text-xs mt-4 text-green-600 font-medium italic">Mengirim nota ke email...</p>
+        
     </div>
+
+    <script>
+        
+        // 1. Ambil data dari LocalStorage
+        const data = JSON.parse(localStorage.getItem('currentBooking'));
+
+        if(data) {
+            document.getElementById('note-name').innerText = data.fullName;
+            document.getElementById('note-room').innerText = data.room;
+            document.getElementById('note-time').innerText = `${data.date} (${data.timeSlot})`;
+            document.getElementById('note-method').innerText = data.paymentMethod;
+            document.getElementById('note-total').innerText = "Rp " + data.totalPrice.toLocaleString();
+
+            // 2. Logika Kirim Email Otomatis (EmailJS)
+            // Daftar di emailjs.com untuk mendapatkan USER_ID & TEMPLATE_ID
+            (function(){
+                emailjs.init("YOUR_PUBLIC_KEY"); // Ganti dengan Public Key Anda
+            })();
+
+            const templateParams = {
+                to_name: data.fullName,
+                room_type: data.room,
+                total_price: "Rp " + data.totalPrice.toLocaleString(),
+                message: `Booking Anda pada ${data.date} pukul ${data.timeSlot} telah berhasil.`
+            };
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(() => {
+                    document.getElementById('email-status').innerText = "✅ Nota telah dikirim ke email Anda!";
+                }, (error) => {
+                    document.getElementById('email-status').innerText = "❌ Gagal mengirim email otomatis.";
+                    console.log('FAILED...', error);
+                });
+        }
+
+        // Tunggu invoice muncul, lalu tangkap sebagai gambar
+html2canvas(document.getElementById("invoice-card")).then(canvas => {
+    const base64Image = canvas.toDataURL("image/png");
+
+    const templateParams = {
+        to_name: data.fullName,
+        room_type: data.room,
+        total_price: "Rp " + data.totalPrice.toLocaleString(),
+        // Kirim data gambar ke template (pastikan di template EmailJS ada variabel {{content_image}})
+        content_image: base64Image 
+    };
+
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+        .then(() => {
+            document.getElementById('email-status').innerText = "✅ Nota telah dikirim ke email Anda!";
+        }, (error) => {
+            document.getElementById('email-status').innerText = "❌ Gagal mengirim email otomatis.";
+        });
+});
+    </script>
 </body>
 </html>
