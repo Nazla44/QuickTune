@@ -7,175 +7,138 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
         body { 
             font-family: 'Poppins', sans-serif; 
-            background: radial-gradient(circle at top left, #2e1065, #0f172a, #000);
+            background: #0f0c29; /* Warna background sesuai email */
         }
-
-        /* Kartu Nota Aesthetic */
-        .invoice-box {
-            background: white;
-            position: relative;
-            border-radius: 24px;
-            overflow: hidden;
+        .invoice-box { 
+            background: #1a1a2e; 
+            border: 1px solid rgba(255, 73, 193, 0.3);
+            border-radius: 30px; 
+            overflow: hidden; 
         }
-
-        /* Aksen Potongan Tiket */
-        .invoice-box::before, .invoice-box::after {
-            content: "";
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: #0f172a; /* Warna sama dengan bg luar */
-            border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
+        .header-gradient {
+            background: linear-gradient(135deg, #FF49C1 0%, #8000FF 100%);
         }
-        .invoice-box::before { left: -15px; }
-        .invoice-box::after { right: -15px; }
-
-        .dashed-line {
-            border-top: 2px dashed #e2e8f0;
-            position: relative;
+        .dashed-line { 
+            border-top: 2px dashed rgba(255, 255, 255, 0.1); 
         }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .neon-text {
+            color: #FF49C1;
+            text-shadow: 0 0 10px rgba(255, 73, 193, 0.5);
         }
-
-        @media print {
-            .no-print { display: none; }
-            body { background: white; }
-            .invoice-box { box-shadow: none; border: 1px solid #eee; }
+        @media print { 
+            .no-print { display: none; } 
+            body { background: white; color: black; } 
+            .invoice-box { border: 1px solid #ccc; background: white; }
         }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-6">
 
     <div class="w-full max-w-md">
-        <div id="invoice-card" class="invoice-box shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        <div id="invoice-card" class="invoice-box shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]">
             
-            <div class="p-8 text-center bg-slate-50">
-                <div class="inline-block p-3 bg-purple-100 rounded-2xl mb-4">
-                    <i class='bx bxs-music text-4xl text-purple-600'></i>
+            <div class="header-gradient p-8 text-center">
+                <div class="inline-block p-4 bg-white/20 rounded-2xl mb-3">
+                    <i class='bx bxs-microphone text-3xl text-white'></i>
                 </div>
-                <h1 class="text-3xl font-800 tracking-tighter text-slate-900 uppercase">Quick<span class="gradient-text">Tune</span></h1>
-                <p class="text-xs text-slate-400 font-medium tracking-widest mt-1">E-INVOICE OFFICIAL</p>
+                <h1 class="text-3xl font-black tracking-widest text-white uppercase">QuickTune</h1>
+                <p class="text-[10px] text-white/80 font-bold tracking-[0.3em] uppercase">Booking Confirmed</p>
             </div>
 
-            <div class="absolute top-20 right-[-20px] rotate-12 opacity-10 pointer-events-none">
-                <h1 class="text-6xl font-black text-green-600 border-8 border-green-600 px-4 py-2">PAID</h1>
-            </div>
-
-            <div class="px-8 py-6 space-y-5">
-                <div class="flex justify-between items-center">
-                    <div class="text-left">
-                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">No. Transaksi</p>
-                        <p class="font-bold text-slate-700" id="inv-no">#QT-20250101</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Tanggal</p>
-                        <p class="font-bold text-slate-700" id="note-date">-- -- ----</p>
-                    </div>
+            <div class="p-8 space-y-6">
+                <div class="space-y-1">
+                    <p class="text-white text-lg">Halo, <strong id="display-name" class="neon-text">-</strong>!</p>
+                    <p class="text-slate-400 text-xs leading-relaxed">Siapkan suaramu! Pembayaran untuk sesi karaoke kamu telah berhasil diverifikasi. Berikut adalah detail tiket digitalmu:</p>
                 </div>
 
-                <div class="space-y-3">
-                    <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
-                        <i class='bx bxs-user-circle text-xl text-purple-500'></i>
-                        <div>
-                            <p class="text-[9px] text-slate-400 uppercase font-bold">Pelanggan</p>
-                            <p id="note-name" class="text-sm font-bold text-slate-700">-</p>
-                        </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
+                    <div class="border-b border-dashed border-white/10 pb-3">
+                        <p class="text-[10px] text-pink-500 font-extrabold uppercase tracking-wider mb-1">Room Type</p>
+                        <p id="note-room-info" class="text-white font-bold text-lg">-</p>
                     </div>
 
-                    <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
-                        <i class='bx bxs-door-open text-xl text-pink-500'></i>
+                    <div class="flex justify-between items-center">
                         <div>
-                            <p class="text-[9px] text-slate-400 uppercase font-bold">Ruangan & Sesi</p>
-                            <p id="note-room-info" class="text-sm font-bold text-slate-700">-</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Date</p>
+                            <p id="note-date" class="text-white font-semibold text-sm">--/--/----</p>
                         </div>
-                    </div>
-
-                    <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
-                        <i class='bx bxs-credit-card-front text-xl text-blue-500'></i>
-                        <div>
-                            <p class="text-[9px] text-slate-400 uppercase font-bold">Metode Pembayaran</p>
-                            <p id="note-method" class="text-sm font-bold text-slate-700">-</p>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Transaction ID</p>
+                            <p id="inv-no" class="text-white font-semibold text-sm">#QT-000000</p>
                         </div>
                     </div>
                 </div>
+
+                <div class="text-center py-4">
+                    <p class="text-slate-400 text-xs mb-1 font-medium uppercase tracking-widest">Total Paid</p>
+                    <h2 id="note-total" class="text-4xl font-black neon-text">Rp 0</h2>
+                </div>
+
+                <div class="text-center pt-2">
+                    <p class="italic font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 text-lg">
+                        Keep singing, keep shining!
+                    </p>
+                </div>
             </div>
 
-            <div class="dashed-line my-2"></div>
-
-            <div class="px-8 py-8 flex justify-between items-center">
-                <div>
-                    <p class="text-xs text-slate-400 font-bold uppercase">Total Pembayaran</p>
-                    <p id="note-total" class="text-3xl font-black text-slate-900 tracking-tighter">Rp 0</p>
-                </div>
-                <div class="bg-green-100 text-green-600 p-2 rounded-full">
-                    <i class='bx bx-check-double text-2xl'></i>
-                </div>
-            </div>
-
-            <div class="bg-slate-900 p-4 text-center">
-                <p class="text-[10px] text-slate-400 font-medium tracking-widest uppercase italic">Keep singing, keep shining!</p>
+            <div class="bg-black/20 p-6 text-center">
+                <p class="text-[9px] text-slate-500 font-bold tracking-widest">&copy; 2025 QUICKTUNE KARAOKE. ALL RIGHTS RESERVED.</p>
             </div>
         </div>
+
+        <p id="email-status" class="text-center text-[10px] mt-6 text-purple-400/60 font-medium tracking-wider uppercase">
+            <i class='bx bx-loader-alt animate-spin'></i> Mengirim nota digital...
+        </p>
 
         <div class="mt-8 grid grid-cols-2 gap-4 no-print">
-            <button onclick="window.print()" class="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 py-4 rounded-2xl font-bold transition-all active:scale-95 text-sm">
-                <i class='bx bxs-printer'></i> CETAK NOTA
-            </button>
-            <button onclick="window.location.href='index.html'" class="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white py-4 rounded-2xl font-bold shadow-lg shadow-purple-500/30 transition-all active:scale-95 text-sm">
-                <i class='bx bxs-home'></i> KEMBALI
-            </button>
+            <button onclick="window.print()" class="bg-white/5 border border-white/10 text-white py-4 rounded-2xl font-bold text-xs hover:bg-white/10 transition-all uppercase tracking-widest">PRINT</button>
+            <button onclick="localStorage.removeItem('currentBooking'); window.location.href='index.html'" class="header-gradient text-white py-4 rounded-2xl font-bold text-xs hover:opacity-90 transition-all uppercase tracking-widest">HOME</button>
         </div>
-
-        <p id="email-status" class="text-center text-[10px] mt-6 text-purple-300 font-medium tracking-wider animate-pulse uppercase">
-            <i class='bx bx-loader-alt animate-spin'></i> Menyinkronkan data ke email...
-        </p>
     </div>
 
     <script>
         const data = JSON.parse(localStorage.getItem('currentBooking'));
 
         if(data) {
-            // Isi data nota
-            document.getElementById('note-name').innerText = data.fullName;
-            document.getElementById('note-room-info').innerText = `${data.room} Room (${data.duration} Jam)`;
-            document.getElementById('note-date').innerText = data.date;
-            document.getElementById('note-method').innerText = data.paymentMethod || 'QRIS / Digital';
-            document.getElementById('note-total').innerText = "Rp " + data.totalPrice.toLocaleString('id-ID');
+            const randomID = "QT-" + Math.floor(100000 + Math.random() * 900000);
             
-            // Buat No Transaksi Random
-            const randomID = Math.floor(Math.random() * 900000) + 100000;
-            document.getElementById('inv-no').innerText = `#QT-${randomID}`;
+            // Display ke Nota
+            document.getElementById('inv-no').innerText = "#" + randomID;
+            document.getElementById('display-name').innerText = data.fullName;
+            document.getElementById('note-room-info').innerText = data.room + " Room (" + data.duration + " Jam)";
+            document.getElementById('note-date').innerText = data.date;
+            document.getElementById('note-total').innerText = "Rp " + data.totalPrice.toLocaleString('id-ID');
 
-            // --- Logika EmailJS ---
-            (function(){
-                emailjs.init("YOUR_PUBLIC_KEY"); // GANTI INI
-            })();
+            // EmailJS Config
+            const PUBLIC_KEY = "qTyTiqybVsjz6O6Za";
+            const SERVICE_ID = "QUICKTUNE";
+            const TEMPLATE_ID = "template_y023ni7";
 
-            const templateParams = {
+            emailjs.init(PUBLIC_KEY);
+
+            const params = {
+                to_email: data.email,
                 to_name: data.fullName,
+                order_id: randomID,
                 room_type: data.room,
                 total_price: "Rp " + data.totalPrice.toLocaleString('id-ID'),
-                date: data.date,
-                method: data.paymentMethod
+                date: data.date
             };
 
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+            emailjs.send(SERVICE_ID, TEMPLATE_ID, params)
                 .then(() => {
-                    document.getElementById('email-status').innerHTML = "<i class='bx bxs-check-circle'></i> Nota Terkirim Otomatis";
-                }, (error) => {
-                    document.getElementById('email-status').innerText = "Simulasi: Email Terkirim (Demo)";
+                    document.getElementById('email-status').className = "text-center text-[10px] mt-6 text-green-400 font-bold uppercase tracking-widest";
+                    document.getElementById('email-status').innerHTML = "✅ NOTA SUDAH MASUK KE EMAIL: " + data.email;
+                })
+                .catch((err) => {
+                    document.getElementById('email-status').className = "text-center text-[10px] mt-6 text-red-400 font-bold uppercase tracking-widest";
+                    document.getElementById('email-status').innerHTML = "❌ GAGAL: " + err.text;
                 });
         } else {
             window.location.href = 'index.html';
