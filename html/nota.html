@@ -13,7 +13,7 @@
     <style>
         body { 
             font-family: 'Poppins', sans-serif; 
-            background: #0f0c29; /* Warna background sesuai email */
+            background: #0f0c29; 
         }
         .invoice-box { 
             background: #1a1a2e; 
@@ -23,9 +23,6 @@
         }
         .header-gradient {
             background: linear-gradient(135deg, #FF49C1 0%, #8000FF 100%);
-        }
-        .dashed-line { 
-            border-top: 2px dashed rgba(255, 255, 255, 0.1); 
         }
         .neon-text {
             color: #FF49C1;
@@ -102,65 +99,74 @@
         </div>
     </div>
 
-    <script>
+<script>
     const data = JSON.parse(localStorage.getItem('currentBooking'));
 
     if(data) {
         const randomID = "QT-" + Math.floor(100000 + Math.random() * 900000);
         
-        // Tampilkan ke layar
+        // Update tampilan layar
         document.getElementById('inv-no').innerText = "#" + randomID;
         document.getElementById('display-name').innerText = data.fullName;
         document.getElementById('note-room-info').innerText = data.room + " Room (" + data.duration + " Jam)";
         document.getElementById('note-date').innerText = data.date;
         document.getElementById('note-total').innerText = "Rp " + data.totalPrice.toLocaleString('id-ID');
 
-        // --- KONFIGURASI ---
+        // --- KONFIGURASI SESUAI AKUN KAMU ---
+        const SHEETDB_URL = "https://sheetdb.io/api/v1/kkvjvcqqeenzf"; 
         const PUBLIC_KEY = "qTyTiqybVsjz6O6Za";
         const SERVICE_ID = "QUICKTUNE";
         const TEMPLATE_ID = "template_y023ni7";
-        const SHEETDB_URL = "MASUKKAN_API_URL_SHEETDB_DISINI"; // <--- PASTE DISINI
 
         emailjs.init(PUBLIC_KEY);
 
-        // Data untuk dikirim
-        const params = {
-            to_email: data.email,
-            to_name: data.fullName,
-            order_id: randomID,
-            room_type: data.room,
-            total_price: "Rp " + data.totalPrice.toLocaleString('id-ID'),
-            date: data.date
-        };
-
-        // 1. KIRIM EMAIL
-        emailjs.send(SERVICE_ID, TEMPLATE_ID, params)
-            .then(() => {
-                document.getElementById('email-status').innerHTML = "✅ NOTA TERKIRIM KE EMAIL!";
-                
-                // 2. SIMPAN KE GOOGLE SHEETS (Hanya jika email berhasil/proses)
-                const dataKeSheet = {
-                    orderID: randomID,
-                    name: data.fullName,
-                    email: data.email,
-                    room: data.room,
-                    duration: data.duration,
-                    date: data.date,
-                    total: data.totalPrice
-                };
-
-                fetch(SHEETDB_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ data: [dataKeSheet] })
-                })
-                .then(res => console.log("Data berhasil masuk ke Google Sheets!"))
-                .catch(err => console.error("Gagal simpan ke Sheets:", err));
-
+        // 1. KIRIM DATA KE GOOGLE SHEETS DULU
+        fetch(SHEETDB_URL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: [
+                    {
+                        "orderID": randomID,
+                        "name": data.fullName,
+                        "email": data.email,
+                        "room": data.room,
+                        "duration": data.duration,
+                        "date": data.date,
+                        "total": data.totalPrice
+                    }
+                ]
             })
-            .catch((err) => {
-                document.getElementById('email-status').innerHTML = "❌ GAGAL: " + err.text;
-            });
+        })
+        .then(res => res.json())
+        .then(result => {
+            console.log("SheetDB Success:", result);
+            
+            // 2. SETELAH BERHASIL SIMPAN, BARU KIRIM EMAIL
+            const params = {
+                to_email: data.email,
+                to_name: data.fullName,
+                order_id: randomID,
+                room_type: data.room,
+                total_price: "Rp " + data.totalPrice.toLocaleString('id-ID'),
+                date: data.date
+            };
+
+            return emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
+        })
+        .then(() => {
+            document.getElementById('email-status').className = "text-center text-[10px] mt-6 text-green-400 font-bold uppercase tracking-widest";
+            document.getElementById('email-status').innerHTML = "✅ DATA TERSIMPAN & NOTA TERKIRIM!";
+        })
+        .catch(err => {
+            console.error("Error detail:", err);
+            document.getElementById('email-status').className = "text-center text-[10px] mt-6 text-red-400 font-bold uppercase tracking-widest";
+            document.getElementById('email-status').innerHTML = "❌ GAGAL: CEK KONEKSI / SETELAN SHEET";
+        });
+
     } else {
         window.location.href = 'index.html';
     }
