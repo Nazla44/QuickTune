@@ -77,7 +77,6 @@
             box-shadow: 0 4px 15px rgba(255, 73, 193, 0.4);
         }
 
-        /* MODAL DENGAN WARNA PREMIUM (STRUKTUR TETAP) */
         .modal {
             display: none; 
             position: fixed;
@@ -91,7 +90,7 @@
         }
 
         .modal-content {
-            background: #1a1a2e; /* Warna Navy Gelap Premium */
+            background: #1a1a2e;
             padding: 30px;
             border-radius: 30px;
             width: 90%;
@@ -106,7 +105,7 @@
         .modal-label {
             display: block;
             font-size: 13px;
-            color: #FF49C1; /* Aksen Pink agar cantik */
+            color: #FF49C1;
             font-weight: 600;
             margin-bottom: 5px;
             text-transform: uppercase;
@@ -114,7 +113,7 @@
         }
 
         .custom-input {
-            background: rgba(255, 255, 255, 0.05); /* Transparan Aesthetic */
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
             width: 100%;
@@ -126,15 +125,8 @@
             transition: 0.3s;
         }
 
-        .custom-input:focus {
-            border-color: #FF49C1;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .custom-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
+        .custom-input:focus { border-color: #FF49C1; background: rgba(255, 255, 255, 0.1); }
+        .custom-input::placeholder { color: rgba(255, 255, 255, 0.4); }
         .custom-input option { background: #1a1a2e; }
 
         .duration-container { display: flex; gap: 8px; margin-bottom: 15px; }
@@ -155,11 +147,7 @@
             box-shadow: 0 0 15px rgba(255, 73, 193, 0.5); 
         }
 
-        .price-details {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 15px;
-            font-size: 14px;
-        }
+        .price-details { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; font-size: 14px; }
         .price-row { display: flex; justify-content: space-between; margin-bottom: 5px; color: #ccc; }
         .total-text { 
             font-size: 22px; 
@@ -184,7 +172,6 @@
             transition: 0.3s;
         }
         .confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 0, 229, 0.4); }
-
         .close-btn { position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer; color: rgba(255,255,255,0.5); }
     </style>
 </head>
@@ -224,7 +211,7 @@
                     <option value="0">Tidak Menggunakan Promo</option>
                     <option value="18000">Happy Hour Diskon Ruangan 30%</option>
                     <option value="12000">Promo Bulanan Desember</option>
-                    <option value="0">Christmas Carol Package-Gratis 1 Jam 2 Minuman</option>
+                    <option value="0">Christmas Carol Package</option>
                     <option value="30000">New Year's Eve Party</option>
                 </select>
 
@@ -306,9 +293,7 @@
             updatePrice();
         }
 
-        function closeBookingModal() {
-            document.getElementById('bookingModal').style.display = 'none';
-        }
+        function closeBookingModal() { document.getElementById('bookingModal').style.display = 'none'; }
 
         function updateDuration(h, btn) {
             selectedHours = h;
@@ -321,22 +306,23 @@
             const subtotal = currentPricePerHour * selectedHours;
             const discount = parseInt(document.getElementById('promoSelect').value);
             const total = subtotal - discount;
-
             document.getElementById('price-calc-text').innerText = `${selectedHours} jam x Rp ${currentPricePerHour.toLocaleString('id-ID')}`;
             document.getElementById('base-price').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
             document.getElementById('discount-amount').innerText = `- Rp ${discount.toLocaleString('id-ID')}`;
             document.getElementById('total-price').innerText = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
+        // --- PENGGANTIAN SISTEM LOCALSTORAGE ---
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
             const subtotal = currentPricePerHour * selectedHours;
             const discount = parseInt(document.getElementById('promoSelect').value);
             const promoName = document.getElementById('promoSelect').options[document.getElementById('promoSelect').selectedIndex].text;
 
             const bookingData = {
                 fullName: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
+                email: document.getElementById('email').value, // Disimpan untuk EmailJS
                 room: selectedRoom,
                 date: document.getElementById('date').value,
                 duration: selectedHours,
@@ -347,7 +333,10 @@
                 paymentMethod: "Bank Transfer"
             };
 
+            // Simpan data final ke storage
             localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+            
+            // Redirect ke halaman payment
             window.location.href = 'payment.html'; 
         });
     </script>
