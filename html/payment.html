@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran QuickTune</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+
+        /* Modern card style - Tetap dipertahankan */
+        .payment-option {
+            transition: all .25s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(12px);
+        }
+        .payment-option:hover {
+            transform: translateY(-3px);
+            border-color: #d400ff;
+            box-shadow: 0 0 15px rgba(212, 0, 255, 0.6);
+        }
+        .payment-option.selected {
+            border-color: #ff00a6;
+            background: rgba(255, 0, 161, 0.15);
+            box-shadow: 0 0 20px rgba(255, 0, 161, 0.8);
+        }
+
+        /* Tombol bayar - Tetap dipertahankan */
+        .pay-btn {
+            background: linear-gradient(135deg, #ff0080, #9d00ff);
+            box-shadow: 0 4px 20px rgba(255, 0, 128, 0.4);
+            transition: all .25s ease;
+        }
+        .pay-btn:hover:not(:disabled) {
+            scale: 1.03;
+            box-shadow: 0 6px 25px rgba(255, 0, 128, 0.6);
+        }
+        .pay-btn:disabled {
+            background: #555;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Outer container glass - Tetap dipertahankan */
+        .payment-container {
+            background: rgba(255, 0, 251, 0.3);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+        }
+
+        /* Modal Style Pop-up */
+        #paymentModal {
+            display: none;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+        }
+        .modal-content {
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-purple-900 via-fuchsia-900 to-black min-h-screen flex items-center justify-center p-4">
+
+    <div class="payment-container w-full max-w-lg p-7 rounded-2xl">
+
+        <h2 class="text-4xl font-extrabold text-white mb-6 text-center tracking-wide drop-shadow-lg">
+            Ringkasan Pembayaran
+        </h2>
+
+        <div class="bg-black/40 p-5 rounded-xl text-gray-200 shadow-xl border border-white/10">
+            <h3 class="text-xl font-bold text-white border-b border-white/20 pb-2 mb-3">Detail Booking</h3>
+
+            <table class="w-full text-sm space-y-1">
+                <tbody>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Nama Pemesan:</td>
+                        <td id="summary-name" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Ruangan (Tipe):</td>
+                        <td id="summary-roomtype" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Waktu:</td>
+                        <td id="summary-datetime" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Durasi:</td>
+                        <td id="summary-duration" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10">
+                        <td class="py-1">Harga Dasar:</td>
+                        <td id="summary-baseprice" class="py-1 text-right font-semibold text-white"></td>
+                    </tr>
+                    <tr class="border-b border-white/10 text-green-400">
+                        <td class="py-1">Diskon (<span id="summary-promo">Promo</span>):</td>
+                        <td id="summary-discount" class="py-1 text-right font-semibold"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="flex justify-between text-2xl font-extrabold text-white pt-4 mt-3 border-t border-white/20">
+                <span>Total Bayar</span>
+                <span id="final-total-price" class="drop-shadow-lg">Rp.0</span>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-white mt-7 mb-4">Pilih Metode Pembayaran</h3>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="payment-option p-4 rounded-xl text-center text-white" data-method="QRIS">
+                <i class='bx bx-qr-scan text-4xl mb-1'></i>
+                <p class="font-semibold text-sm">QRIS</p>
+            </div>
+            <div class="payment-option p-4 rounded-xl text-center text-white" data-method="Virtual Account">
+                <i class='bx bxs-bank text-4xl mb-1'></i>
+                <p class="font-semibold text-sm">Virtual Account</p>
+            </div>
+            <div class="payment-option p-4 rounded-xl text-center text-white" data-method="E-Wallet">
+                <i class='bx bxs-wallet text-4xl mb-1'></i>
+                <p class="font-semibold text-sm">E-wallet</p>
+            </div>
+            <div class="payment-option p-4 rounded-xl text-center text-white" data-method="Lainnya">
+                <i class='bx bxs-credit-card text-4xl mb-1'></i>
+                <p class="font-semibold text-sm">Credit</p>
+            </div>
+        </div>
+
+        <button id="payButton" disabled class="pay-btn w-full p-4 mt-8 rounded-xl text-white font-bold text-lg">
+            Pilih Metode Pembayaran
+        </button>
+
+    </div>
+
+    <div id="paymentModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-content bg-white w-full max-w-sm rounded-3xl p-8 text-center shadow-2xl">
+            <div id="processingArea">
+                <div class="animate-spin inline-block w-12 h-12 border-4 border-fuchsia-600 border-t-transparent rounded-full mb-4"></div>
+                <h3 class="text-gray-800 font-bold">Menghubungkan...</h3>
+            </div>
+
+            <div id="codeArea" class="hidden">
+                <div id="qrBox" class="hidden mb-4 flex flex-col items-center">
+                    <img id="qrisImg" src="" class="w-40 h-40 border p-2 rounded-xl mb-2">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase">Scan Barcode Ini</p>
+                </div>
+                <div id="vaBox" class="hidden">
+                    <p class="text-gray-400 text-xs uppercase font-bold mb-1">Kode Bayar / VA</p>
+                    <h2 id="virtualCode" class="text-3xl font-black text-gray-900 mb-6 tracking-widest">--</h2>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-2xl mb-6 flex justify-between text-left">
+                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Total</p><p id="modalTotal" class="text-gray-900 font-bold text-sm"></p></div>
+                    <div class="text-right"><p class="text-[10px] text-gray-400 uppercase font-bold">Metode</p><p id="modalMethod" class="text-fuchsia-600 font-bold text-sm"></p></div>
+                </div>
+
+                <button onclick="simulateSuccess()" class="w-full bg-black text-white font-bold py-4 rounded-2xl">SAYA SUDAH BAYAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CURRENCY_SYMBOL = 'Rp.';
+        let selectedPaymentMethod = null;
+        let bookingData = null;
+
+        function formatRupiah(number) {
+            if (!number) return '0';
+            return parseFloat(number).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function loadBookingSummary() {
+            const dataString = localStorage.getItem('currentBooking');
+            if (!dataString) return window.location.href = 'index.html';
+            bookingData = JSON.parse(dataString);
+
+            document.getElementById('summary-name').textContent = bookingData.fullName;
+            document.getElementById('summary-roomtype').textContent = bookingData.room;
+            document.getElementById('summary-datetime').textContent = bookingData.date;
+            document.getElementById('summary-duration').textContent = bookingData.duration + ' jam';
+            document.getElementById('summary-baseprice').textContent = CURRENCY_SYMBOL + formatRupiah(bookingData.basePrice);
+            document.getElementById('summary-promo').textContent = bookingData.promoName || 'Promo';
+            document.getElementById('summary-discount').textContent = `- ${CURRENCY_SYMBOL}${formatRupiah(bookingData.discountAmount)}`;
+            document.getElementById('final-total-price').textContent = CURRENCY_SYMBOL + formatRupiah(bookingData.totalPrice);
+        }
+
+        document.querySelectorAll('.payment-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedPaymentMethod = this.dataset.method;
+                const btn = document.getElementById('payButton');
+                btn.disabled = false;
+                btn.textContent = `Bayar dengan ${selectedPaymentMethod}`;
+            });
+        });
+
+        document.getElementById('payButton').addEventListener('click', () => {
+            document.getElementById('paymentModal').style.display = 'flex';
+            
+            if(selectedPaymentMethod === "QRIS") {
+                document.getElementById('qrBox').classList.remove('hidden');
+                document.getElementById('vaBox').classList.add('hidden');
+                document.getElementById('qrisImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=QT-${Date.now()}`;
+            } else {
+                document.getElementById('qrBox').classList.add('hidden');
+                document.getElementById('vaBox').classList.remove('hidden');
+                document.getElementById('virtualCode').textContent = "880" + Math.floor(10000000 + Math.random() * 90000000);
+            }
+
+            document.getElementById('modalMethod').textContent = selectedPaymentMethod;
+            document.getElementById('modalTotal').textContent = CURRENCY_SYMBOL + formatRupiah(bookingData.totalPrice);
+
+            setTimeout(() => {
+                document.getElementById('processingArea').classList.add('hidden');
+                document.getElementById('codeArea').classList.remove('hidden');
+            }, 1200);
+        });
+
+        function simulateSuccess() {
+            document.getElementById('codeArea').innerHTML = `<h2 class="text-green-500 font-bold text-xl">Pembayaran Berhasil!</h2><p class="text-gray-400 text-sm">Menuju nota...</p>`;
+            setTimeout(() => {
+                bookingData.paymentMethod = selectedPaymentMethod;
+                localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+                window.location.href = 'nota.html';
+            }, 1500);
+        }
+
+        window.onload = loadBookingSummary;
+    </script>
+</body>
+</html>

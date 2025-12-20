@@ -186,36 +186,25 @@ header.active .navbar a{
 
 /* 2. KELAS GAMBAR (DIKOREKSI AGAR MENGGUNAKAN .home-image) */
 .home-image { 
-    flex: 1 1 17rem; /* Memberi basis lebar yang lebih kecil untuk gambar */
+    flex: 1.2 1 22rem;   /* Lebih besar dari teks */
     display: flex;
-    justify-content: flex-end; /* Memindahkan gambar ke kanan */
+    justify-content: flex-end;
     align-items: center;
 }
 
 .home-image img {
-    max-width: 90%; 
-    height: 350px; 
-    object-fit: cover;
-    border-radius: 50%; /* Bentuk Lingkaran */
-    transition: all 0.4s ease-in-out; 
-    
-    /* Efek Timbul / Glow dengan Multiple Box Shadows */
+    width: 520px;        /* AWALNYA 360px */
+    max-width: 100%;
+    border-radius: 50%;
+    border: 8px solid rgba(255,255,255,0.45);
     box-shadow: 
-        0 0 15px rgba(255, 73, 193, 0.7), /* Magenta Glow */
-        0 0 30px rgba(106, 20, 82, 0.8),  /* Ungu Tua Glow */
-        0 15px 40px rgba(0, 0, 0, 0.5);   /* Bayangan Kedalaman */
-        
-    /* Border Menarik */
-    border: 6px solid var(--color-magenta); 
+        0 25px 50px rgba(0,0,0,0.3),
+        0 0 0 12px rgba(255, 73, 193, 0.15);
+    transition: 0.4s ease;
 }
 
-/* Efek Zoom saat Kursor Diarahkan (Hover) */
 .home-image img:hover {
-    transform: scale(1.05) rotate(1deg);
-    box-shadow: 
-        0 0 25px var(--color-light-yellow), 
-        0 0 50px var(--color-magenta),
-        0 20px 50px rgba(0, 0, 0, 0.7);
+    transform: scale(1.08) rotate(1deg);
 }
 
 /* kategory */
@@ -229,45 +218,31 @@ header.active .navbar a{
   color: inherit;
 }
 .category-grid {
-  /*margin-top: 0;
+  margin-top: 20px;
   padding: 10px 0;
   display: flex;
-  gap: 20px;
-  /*grid-template-columns: 225px 225px 225.275px;
-  justify-content: space-between;
-  align-items: stretch;*/
-  display: flex;
-  gap: 20px;
-  padding: 10px 0;
-  margin-top: 0;
-  justify-content: flex-start;
+  gap: 24px;
+  justify-content: center;
+  align-items: stretch; /* INI PENTING */
 }
 .category-card {
-  /*margin-top: 0;
-  padding-top: 20px;
-  text-align: center;
   flex: 1 1 0;
-    min-height: 350px;
-    display: flex;
-    flex-direction: column;*/
-    margin-top: 0;
-    padding-top: 20px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    min-height: 350px;
-    flex-grow: 0;
-    flex-basis: calc((100% - 60px) / 4);
-    flex-shrink: 0;
+  max-width: 260px;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .category-card img {
-    order: 1;
-  margin-top: 0;  
-  margin-bottom: 15px;
-  border-radius: 2rem;
   width: 100%;
-  aspect-ratio: 4/5;
+  height: 380px;
   object-fit: cover;
+  border-radius: 2rem;
+  margin-bottom: 12px; /* JARAK DEKAT DENGAN JUDUL */
+}
+.category-card:hover img {
+  transform: scale(1.03);
+  transition: 0.3s ease;
 }
 .category-title {
   text-align: center;
@@ -282,13 +257,11 @@ header.active .navbar a{
 }
 
 .category-card h4 {
-    order: 2;
-    margin-top: auto;
-  font-size: 1.25rem;
+  margin: 0;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--main-color);
   text-align: center;
-  padding-bottom: 20px;
 }
 
 /* Rekomendasi */
@@ -374,6 +347,58 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
+}
+
+/* --- Tambahan khusus untuk Choose a Room agar 4 Sejajar --- */
+
+/* 1. Pastikan container grid menggunakan Flexbox */
+.room-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 20px !important;
+    margin-top: 40px !important;
+    flex-wrap: nowrap !important; /* Paksa tetap satu baris */
+}
+
+/* 2. Atur kartu agar memiliki ukuran dan gambar */
+.room-card {
+    flex: 1 !important;
+    height: 400px !important; /* Tinggi kartu */
+    border-radius: 30px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background-size: cover !important;
+    background-position: center !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    text-decoration: none !important;
+    transition: 0.4s ease !important;
+}
+
+/* 3. Masukkan link gambar (Pastikan nama file di folder img sudah benar) */
+.bronze { background-image: url('../assets/room3.jpeg'); }
+.silver { background-image: url('../assets/room6.jpeg'); }
+.gold { background-image: url('../assets/room5.jpeg'); }
+.platinum { background-image: url('../assets/room4.jpeg'); }
+
+/* 4. Overlay agar teks putih terbaca jelas */
+.overlay {
+    width: 100% !important;
+    padding: 25px !important;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)) !important;
+}
+
+.room-name {
+    color: #ffffff !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+
+/* Efek angkat saat mouse menempel */
+.room-card:hover {
+    transform: translateY(-10px) !important;
 }
 
 /* Container untuk menjaga lebar konten */
@@ -512,25 +537,6 @@ footer {
     color: var(--second-color);  
 }
 
-/*.footerNav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    padding: 15px 0;
-}
-
-.footerNav ul li a {
-    color: var(--white); 
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-}
-
-.footerNav ul li a:hover {
-    color: #f8a5c2;
-}*/
-
 /* Copyright Bottom */
 .footerBottom {
     padding: 10px 0;
@@ -542,92 +548,16 @@ footer {
     font-size: 0.9rem;
     margin: 0;
 }
-/* ======================= */
-/* FOOTER V1 (Mengikuti Gambar Pertama) */
-/* ======================= */
-/*.main-footer-v1 {
-    padding: 60px 0 20px 0;
-    background: var(--home-color); 
-    color: var(--color3); 
-    margin-top: -1px; 
+
+/* Responsif: Jika layar kekecilan (HP), baru dia turun ke bawah */
+@media (max-width: 991px) {
+    .room-grid {
+        flex-wrap: wrap !important;
+    }
+    .room-card {
+        flex: 1 1 45% !important; /* Jadi 2 baris di HP */
+    }
 }
-
-.footer-grid-final {
-    display: grid;
-    grid-template-columns: 1fr 1fr; 
-    gap: 30px;
-    margin-bottom: 40px;
-}
-
-.footer-col {
-    text-align: center;
-}
-
-.footer-col h3 {
-    font-size: 1.1em;
-    color: var(--color3); 
-    margin-bottom: 15px;
-}
-
-.footer-brand-v1 {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-}
-
-.logo-v1 {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: var(--main-color); 
-    text-decoration: none;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.tagline-v1 {
-    font-size: 0.9em;
-    line-height: 1.5;
-    margin: 0 auto 15px auto; 
-    max-width: 90%;
-}
-
-.footer-contact-v1 p {
-    margin-bottom: 8px;
-    font-size: 0.9em;
-}
-
-
-.social-icons-v1 {
-    display: flex;
-    gap: 15px; 
-    justify-content: center; 
-    margin: 15px auto 0 auto; 
-    width: fit-content; 
-}
-
-.icon-circle {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s;
-    font-size: 1.8em; 
-}
-
-.icon-circle:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-}
-
-.footer-bottom-v1 {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 15px;
-    text-align: center;
-    font-size: 0.8em;
-    opacity: 0.8;
-}*/
 
 /* Responsiveness Sederhana */
 @media (max-width: 600px) {

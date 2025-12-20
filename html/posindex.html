@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin POS - QuickTune</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/posadmin.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">QuickTune</div>
+        <nav class="nav-menu">
+            <ul>
+                <li class="nav-item">
+                    <a href="indexadmin.html"><i class="fas fa-th-large"></i> <span>Room Management</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a href="posindex.html"><i class="fas fa-cash-register"></i> <span>POS & Laporan</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="pricing&promo.html"><i class="fas fa-tags"></i> <span>Pricing & Promo</span></a>
+                </li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <i class="fas fa-user-circle"></i> Kasir Shift Sore
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <h1>POS & Laporan Transaksi</h1>
+            <p>Modul pencatatan pemesanan F&B dan Laporan Shift Kasir otomatis.</p>
+        </header>
+
+        <section class="pos-grid">
+            <div class="pos-left">
+                <div class="card-container">
+                    <h3><i class="fas fa-calculator"></i> POS F&B & Tagihan Ruangan</h3>
+                    
+                    <div class="input-group">
+                        <label>Pilih Ruangan Aktif:</label>
+                        <select>
+                            <option>R01 (Small) - Terpakai</option>
+                            <option>R02 (Medium) - Terpakai</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Input Item / F&B:</label>
+                        <input type="text" placeholder="Ketik nama makanan atau minuman...">
+                    </div>
+
+                    <div class="bill-card">
+                        <div class="bill-row">
+                            <span>Biaya Ruangan (2 Jam)</span>
+                            <span>Rp 120.000</span>
+                        </div>
+                        <div class="bill-row">
+                            <span>F&B Tambahan</span>
+                            <span>Rp 45.000</span>
+                        </div>
+                        <div class="bill-row discount">
+                            <span>Diskon Member</span>
+                            <span>- Rp 10.000</span>
+                        </div>
+                        <hr>
+                        <div class="bill-total">
+                            <span class="total-label">TOTAL AKHIR</span>
+                            <span class="total-amount">Rp 155.000</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-pay">
+                        <i class="fas fa-check-circle"></i> Proses Pembayaran
+                    </button>
+                </div>
+            </div>
+
+            <div class="pos-right">
+                <div class="card-container report-theme">
+                    <h3><i class="fas fa-chart-line"></i> Ringkasan Shift</h3>
+                    <p class="shift-time">20:00 - Sekarang</p>
+
+                    <div class="report-card">
+                        <div class="report-row">
+                            <span>Total Ruangan</span>
+                            <span>Rp 750.000</span>
+                        </div>
+                        <div class="report-row">
+                            <span>Total F&B</span>
+                            <span>Rp 280.000</span>
+                        </div>
+                        <div class="report-row">
+                            <span>Pembayaran Cash</span>
+                            <span>Rp 530.000</span>
+                        </div>
+                        <div class="report-row">
+                            <span>Pembayaran Digital</span>
+                            <span>Rp 500.000</span>
+                        </div>
+                        <hr>
+                        <div class="grand-total">
+                            <p>GRAND TOTAL SHIFT</p>
+                            <h2>Rp 1.030.000</h2>
+                        </div>
+                    </div>
+
+                    <button class="btn-close">
+                        <i class="fas fa-print"></i> Tutup Shift & Cetak Laporan
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
