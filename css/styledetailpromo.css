@@ -1,33 +1,40 @@
 :root {
-            --deep-navy: #1C3A5A;
-            --vibrant-magenta: #FF4B65; /* Mirip dengan FF49C1 */
-            --off-white: #F5F5F5;
-            --white: #FFFFFF;
-            --dark-gray: #495057;
-            --success-green: #28a745;
-            --promo-accent: #FF49C1; /* Magenta Cerah */
-        }
+        --pink-soft: #FFB3AE;
+        --pink-main: #FF49C1;
+        --purple-main: #6A1452;
+        --purple-dark: #44113E;
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--off-white);
-            margin: 0;
-            padding: 0;
-            color: var(--dark-gray);
-        }
+        --white: #FFFFFF;
+        --dark-text: #4A0D3A;
+        --success-green: #28a745;
 
-        /* HEADER (Menggunakan style dari image_238b5c.jpg) */
-        header {
-    /* Latar belakang pink solid yang cerah */
-    background-color: var(--promo-accent);
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: none; 
-    width: 100%;
-    box-sizing: border-box;
-}
+        --page-gradient: linear-gradient(
+            135deg,
+            #FFF7AD,
+            #FFB3AE,
+            #FF49C1,
+            #6A1452,
+            #44113E
+        );
+    }
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: var(--page-gradient);
+        margin: 0;
+        padding: 0;
+        color: var(--dark-text);
+    }
+
+    header {
+        background: rgba(255, 73, 193, 0.95);
+        padding: 18px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        backdrop-filter: blur(8px);
+    }
+
 
 /* LOGO CONTAINER */
 .logo-container {
@@ -84,17 +91,23 @@ nav a:hover {
 
         .promo-detail-card {
             background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
             overflow: hidden;
         }
 
+
         .promo-header {
-            background-color: var(--deep-navy);
+            background: linear-gradient(
+                135deg,
+                var(--pink-main),
+                var(--purple-main)
+            );
             color: var(--white);
-            padding: 30px;
+            padding: 35px 25px;
             text-align: center;
         }
+
 
         .promo-header h1 {
             font-size: 1.5em;
@@ -106,10 +119,15 @@ nav a:hover {
         }
 
         .promo-header .tagline {
-            color: var(--promo-accent);
-            font-weight: 700;
-            font-size: 1.1em;
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
         }
+
 
         .promo-body {
             padding: 30px;
@@ -134,14 +152,18 @@ nav a:hover {
         }
 
         .info-box {
-            background-color: var(--off-white);
-            padding: 15px;
-            border-left: 5px solid var(--success-green);
-            border-radius: 4px;
-            margin-bottom: 20px;
+            background: #FFF0FA;
+            padding: 14px 16px;
+            border-left: 5px solid var(--pink-main);
+            border-radius: 10px;
+            margin-bottom: 14px;
             font-weight: 600;
-            color: var(--success-green);
+            color: var(--purple-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+
 
         .syarat ul {
             list-style: none;
@@ -167,17 +189,23 @@ nav a:hover {
         }
 
         .btn-action {
-            background-color: var(--promo-accent);
+            background: linear-gradient(
+                135deg,
+                var(--pink-main),
+                var(--purple-main)
+            );
             color: var(--white);
-            padding: 15px 40px;
-            font-size: 1.2em;
+            padding: 14px 40px;
+            font-size: 1.1em;
             font-weight: 600;
             border: none;
-            border-radius: 8px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: 0.3s ease;
         }
 
         .btn-action:hover {
-            background-color: #e63e54;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 73, 193, 0.5);
         }
+
