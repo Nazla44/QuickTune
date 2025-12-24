@@ -3,9 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin POS - QuickTune</title>
+    <title>Admin POS & Laporan - QuickTune</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/posadmin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --main-color: #FF49C1;
+            --second-color: #44113E;
+            --sidebar-bg: #2D0B29;
+            --bg-body: #f0f2f5;
+            --white: #FFFFFF;
+            --sidebar-width: 260px;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --info: #3498db;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); display: flex; }
+
+        /* --- SIDEBAR (Konsisten 260px) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--second-color) 0%, var(--sidebar-bg) 100%);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+        }
+        .logo { padding: 30px 20px; text-align: center; font-size: 1.6rem; font-weight: 800; color: var(--main-color); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .nav-menu { flex-grow: 1; padding: 20px 0; }
+        .nav-item { list-style: none; }
+        .nav-item a { display: flex; align-items: center; padding: 15px 25px; color: rgba(255,255,255,0.7); text-decoration: none; transition: 0.3s; }
+        .nav-item.active a { color: var(--white); background: rgba(255,255,255,0.1); border-left: 4px solid var(--main-color); }
+        .nav-item i { width: 30px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); padding: 30px; }
+        
+        /* HEADER DASHBOARD */
+        .dashboard-header { margin-bottom: 25px; }
+        .dashboard-header h1 { font-size: 1.8rem; color: #2d3436; margin-bottom: 5px; }
+        .dashboard-header p { color: #636e72; }
+
+        /* FILTER SECTION */
+        .filter-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 0.85rem; font-weight: 600; color: #636e72; }
+        .filter-group input, .filter-group select { 
+            padding: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; min-width: 150px;
+        }
+        .btn-filter { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-reset { background: #636e72; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+        /* METRIC CARDS */
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
+        .card-metric { 
+            background: white; padding: 25px; border-radius: 15px; display: flex; 
+            justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 5px solid transparent;
+        }
+        .card-income { border-left-color: var(--success); }
+        .card-expense { border-left-color: var(--danger); }
+        .card-balance { border-left-color: var(--info); }
+        
+        .metric-info h3 { font-size: 0.9rem; color: #636e72; text-transform: uppercase; margin-bottom: 8px; }
+        .metric-info .amount { font-size: 1.5rem; font-weight: 800; color: #2d3436; }
+        .metric-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .icon-green { background: #e3fcef; color: var(--success); }
+        .icon-red { background: #ffeaa7; color: var(--danger); }
+        .icon-blue { background: #e1f5fe; color: var(--info); }
+
+        /* GRAFIK SECTION */
+        .chart-container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        /* DATA TABLE (Metode Pembayaran) */
+        .bottom-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+        .data-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .data-card h3 { margin-bottom: 15px; font-size: 1.1rem; border-bottom: 2px solid var(--bg-body); padding-bottom: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 12px; color: #636e72; font-size: 0.9rem; background: #f8f9fa; }
+        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+        .status-paid { background: #e3fcef; color: var(--success); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+    </style>
 </head>
 <body>
 
@@ -13,108 +108,215 @@
         <div class="logo">QuickTune</div>
         <nav class="nav-menu">
             <ul>
-                <li class="nav-item">
-                    <a href="indexadmin.html"><i class="fas fa-th-large"></i> <span>Room Management</span></a>
-                </li>
-                <li class="nav-item active">
-                    <a href="posindex.html"><i class="fas fa-cash-register"></i> <span>POS & Laporan</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="pricing&promo.html"><i class="fas fa-tags"></i> <span>Pricing & Promo</span></a>
-                </li>
+                <li class="nav-item"><a href="indexadmin.php"><i class="fas fa-th-large"></i> <span>Room Management</span></a></li>
+                <li class="nav-item active"><a href="posindex.html"><i class="fas fa-cash-register"></i> <span>POS & Laporan</span></a></li>
+                <li class="nav-item"><a href="pricing&promo.html"><i class="fas fa-tags"></i> <span>Pricing & Promo</span></a></li>
             </ul>
         </nav>
-        <div class="sidebar-footer">
+        <div class="sidebar-footer" style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem;">
             <i class="fas fa-user-circle"></i> Kasir Shift Sore
         </div>
     </aside>
 
     <main class="main-content">
-        <header class="page-header">
-            <h1>POS & Laporan Transaksi</h1>
-            <p>Modul pencatatan pemesanan F&B dan Laporan Shift Kasir otomatis.</p>
+        <header class="dashboard-header">
+            <h1>POS & Laporan Keuangan</h1>
+            <p>Pantau pemasukan, pengeluaran, dan analisis metode pembayaran secara real-time.</p>
         </header>
 
-        <section class="pos-grid">
-            <div class="pos-left">
-                <div class="card-container">
-                    <h3><i class="fas fa-calculator"></i> POS F&B & Tagihan Ruangan</h3>
-                    
-                    <div class="input-group">
-                        <label>Pilih Ruangan Aktif:</label>
-                        <select>
-                            <option>R01 (Small) - Terpakai</option>
-                            <option>R02 (Medium) - Terpakai</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Input Item / F&B:</label>
-                        <input type="text" placeholder="Ketik nama makanan atau minuman...">
-                    </div>
-
-                    <div class="bill-card">
-                        <div class="bill-row">
-                            <span>Biaya Ruangan (2 Jam)</span>
-                            <span>Rp 120.000</span>
-                        </div>
-                        <div class="bill-row">
-                            <span>F&B Tambahan</span>
-                            <span>Rp 45.000</span>
-                        </div>
-                        <div class="bill-row discount">
-                            <span>Diskon Member</span>
-                            <span>- Rp 10.000</span>
-                        </div>
-                        <hr>
-                        <div class="bill-total">
-                            <span class="total-label">TOTAL AKHIR</span>
-                            <span class="total-amount">Rp 155.000</span>
-                        </div>
-                    </div>
-
-                    <button class="btn-pay">
-                        <i class="fas fa-check-circle"></i> Proses Pembayaran
-                    </button>
-                </div>
+        <section class="filter-container">
+            <div class="filter-group">
+                <label>Tanggal Mulai</label>
+                <input type="date" id="startDate" value="2025-12-01">
             </div>
+            <div class="filter-group">
+                <label>Tanggal Akhir</label>
+                <input type="date" id="endDate" value="2025-12-24">
+            </div>
+            <div class="filter-group">
+                <label>Metode Pembayaran</label>
+                <select id="paymentMethod">
+                    <option value="all">Semua Metode</option>
+                    <option value="cash">Tunai (Cash)</option>
+                    <option value="qris">QRIS / Digital</option>
+                    <option value="transfer">Transfer Bank</option>
+                </select>
+            </div>
+            <button class="btn-filter" onclick="filterData()"><i class="fas fa-filter"></i> Filter</button>
+            <button class="btn-reset">Reset</button>
+        </section>
 
-            <div class="pos-right">
-                <div class="card-container report-theme">
-                    <h3><i class="fas fa-chart-line"></i> Ringkasan Shift</h3>
-                    <p class="shift-time">20:00 - Sekarang</p>
-
-                    <div class="report-card">
-                        <div class="report-row">
-                            <span>Total Ruangan</span>
-                            <span>Rp 750.000</span>
-                        </div>
-                        <div class="report-row">
-                            <span>Total F&B</span>
-                            <span>Rp 280.000</span>
-                        </div>
-                        <div class="report-row">
-                            <span>Pembayaran Cash</span>
-                            <span>Rp 530.000</span>
-                        </div>
-                        <div class="report-row">
-                            <span>Pembayaran Digital</span>
-                            <span>Rp 500.000</span>
-                        </div>
-                        <hr>
-                        <div class="grand-total">
-                            <p>GRAND TOTAL SHIFT</p>
-                            <h2>Rp 1.030.000</h2>
-                        </div>
-                    </div>
-
-                    <button class="btn-close">
-                        <i class="fas fa-print"></i> Tutup Shift & Cetak Laporan
-                    </button>
+        <section class="metrics-grid">
+            <div class="card-metric card-income">
+                <div class="metric-info">
+                    <h3>Total Pemasukan Booking</h3>
+                    <div class="amount">Rp 15.750.000</div>
+                    <span style="color: var(--success); font-size: 0.8rem;"><i class="fas fa-arrow-up"></i> 12% dari bulan lalu</span>
                 </div>
+                <div class="metric-icon icon-green"><i class="fas fa-wallet"></i></div>
+            </div>
+            <div class="card-metric card-expense">
+                <div class="metric-info">
+                    <h3>Total Pengeluaran (F&B/Ops)</h3>
+                    <div class="amount">Rp 9.499.256</div>
+                    <span style="color: var(--danger); font-size: 0.8rem;"><i class="fas fa-arrow-down"></i> 5% dari bulan lalu</span>
+                </div>
+                <div class="metric-icon icon-red"><i class="fas fa-shopping-cart"></i></div>
+            </div>
+            <div class="card-metric card-balance">
+                <div class="metric-info">
+                    <h3>Saldo / Keuntungan</h3>
+                    <div class="amount">Rp 6.250.744</div>
+                    <span style="color: var(--info); font-size: 0.8rem;">Total Profit Bersih</span>
+                </div>
+                <div class="metric-icon icon-blue"><i class="fas fa-chart-pie"></i></div>
             </div>
         </section>
+
+        <section class="chart-container">
+            <div class="chart-header">
+                <h3>Grafik Keuangan Mingguan</h3>
+                <div class="chart-actions">
+                    <button class="btn-reset" style="padding: 5px 15px;">Mingguan</button>
+                    <button class="btn-reset" style="padding: 5px 15px; background: none; color: #636e72;">Bulanan</button>
+                </div>
+            </div>
+            <canvas id="financialChart" height="100"></canvas>
+        </section>
+
+        <div class="bottom-grid">
+            <section class="data-card">
+                <h3>Transaksi Terbaru</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Booking</th>
+                            <th>Ruangan</th>
+                            <th>Metode</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#QT-1024</td>
+                            <td>Platinum - P02</td>
+                            <td><b>QRIS</b></td>
+                            <td>Rp 450.000</td>
+                            <td><span class="status-paid">Sukses</span></td>
+                        </tr>
+                        <tr>
+                            <td>#QT-1025</td>
+                            <td>Gold - G01</td>
+                            <td><b>Cash</b></td>
+                            <td>Rp 320.000</td>
+                            <td><span class="status-paid">Sukses</span></td>
+                        </tr>
+                        <tr>
+                            <td>#QT-1026</td>
+                            <td>Bronze - B05</td>
+                            <td><b>Transfer</b></td>
+                            <td>Rp 150.000</td>
+                            <td><span class="status-paid">Sukses</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="data-card">
+                <h3>Populasi Metode Pembayaran</h3>
+                <canvas id="paymentPieChart"></canvas>
+            </section>
+        </div>
     </main>
 
+    <script>
+        // Inisialisasi Grafik Keuangan (Line Chart)
+        const ctx = document.getElementById('financialChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                datasets: [{
+                    label: 'Pemasukan (Rp)',
+                    data: [1200000, 1900000, 1500000, 2500000, 3200000, 4500000, 3800000],
+                    borderColor: '#2ecc71',
+                    backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } } }
+        });
+
+        // Inisialisasi Grafik Metode Pembayaran (Pie Chart)
+        const pieCtx = document.getElementById('paymentPieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Cash', 'QRIS', 'Transfer'],
+                datasets: [{
+                    data: [40, 45, 15],
+                    backgroundColor: ['#f1c40f', '#FF49C1', '#3498db']
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        function filterData() {
+            alert("Memproses filter untuk rentang tanggal dan metode pembayaran...");
+            // Logika filter backend bisa ditambahkan di sini
+        }
+
+        const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbwYID-WkeRVPPhAtz53qlWpmQTV4aC6ftbqLNTZrL8ZaOoAnoDQbOZ0UVeTF4iVcKcm/exec";
+
+async function fetchDataFromSheet() {
+    try {
+        const response = await fetch(SPREADSHEET_URL);
+        const data = await response.json();
+        
+        updateDashboard(data);
+    } catch (error) {
+        console.error("Gagal mengambil data:", error);
+    }
+}
+
+function updateDashboard(data) {
+    let totalPemasukan = 0;
+    let cashCount = 0, qrisCount = 0, transferCount = 0;
+    let tableBody = "";
+
+    data.forEach(item => {
+        // Hitung Total Pemasukan
+        totalPemasukan += parseFloat(item.income);
+
+        // Hitung Populasi Metode Pembayaran
+        if(item.metode.toLowerCase() === 'cash') cashCount++;
+        else if(item.metode.toLowerCase() === 'qris') qrisCount++;
+        else transferCount++;
+
+        // Buat Baris Tabel Transaksi Terbaru
+        tableBody += `
+            <tr>
+                <td>${item.id_booking}</td>
+                <td>${item.ruangan}</td>
+                <td><b>${item.metode}</b></td>
+                <td>Rp ${item.income.toLocaleString()}</td>
+                <td><span class="status-paid">Sukses</span></td>
+            </tr>
+        `;
+    });
+
+    // Update Angka di Kartu Metrik
+    document.querySelector('.card-income .amount').innerText = `Rp ${totalPemasukan.toLocaleString()}`;
+    document.querySelector('tbody').innerHTML = tableBody;
+
+    // Update Grafik (Contoh sederhana)
+    renderCharts(cashCount, qrisCount, transferCount);
+}
+
+// Jalankan fungsi saat halaman dibuka
+window.onload = fetchDataFromSheet;
+    </script>
 </body>
 </html>

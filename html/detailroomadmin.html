@@ -3,164 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickTune Admin - Room Management</title>
+    <title>QuickTune Admin - Update Status</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        /* --- VARIABLE & RESET (Sesuai Sidebar Asli) --- */
         :root {
             --primary: #FF49C1;
-            --secondary: #6A1452;
-            --dark-purple: #44113E;
+            --secondary: #44113E;
             --bg-light: #f8f9fa;
             --white: #ffffff;
             --status-available: #27ae60;
             --status-booked: #2980b9;
-            --status-cleaning: #f1c40f;
+            --status-cleaning: #f39c12;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-light); display: flex; min-height: 100vh; }
 
-        /* --- SIDEBAR --- */
-        .sidebar {
-            width: 260px;
-            background: linear-gradient(180deg, var(--secondary) 0%, var(--dark-purple) 100%);
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            transition: 0.3s;
-            z-index: 100;
-        }
+        /* SIDEBAR */
+        .sidebar { width: 260px; background: var(--secondary); color: white; position: fixed; height: 100vh; padding: 20px; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 30px; text-align: center; }
+        .nav-item { list-style: none; margin-bottom: 10px; }
+        .nav-item a { color: rgba(255,255,255,0.7); text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; }
+        .nav-item.active a { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--primary); }
+        .nav-item i { margin-right: 10px; width: 20px; }
 
-        .logo-area {
-            padding: 30px 20px;
-            text-align: center;
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -1px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
+        /* MAIN CONTENT */
+        .main-content { margin-left: 260px; flex-grow: 1; padding: 40px; }
+        .back-link { text-decoration: none; color: var(--primary); font-weight: 600; margin-bottom: 20px; display: inline-block; }
+        
+        .header-section { margin-bottom: 30px; }
+        .breadcrumb { font-size: 0.85rem; color: #888; margin-top: 5px; }
 
-        .nav-menu {
-            flex-grow: 1;
-            padding: 20px 0;
-        }
-
-        .nav-item {
-            list-style: none;
-        }
-
-        .nav-item a {
-            display: flex;
-            align-items: center;
-            padding: 15px 25px;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: 0.3s;
-            font-weight: 500;
-        }
-
-        .nav-item.active a, .nav-item a:hover {
-            color: var(--white);
-            background: rgba(255,255,255,0.1);
-            border-left: 4px solid var(--primary);
-        }
-
-        .nav-item i {
-            margin-right: 15px;
-            font-size: 1.2rem;
-        }
-
-        .sidebar-footer {
-            padding: 20px;
-            background: rgba(0,0,0,0.2);
-            text-align: center;
-            font-size: 0.85rem;
-        }
-        /* --- MAIN CONTENT --- */
-        .main-content { 
-            margin-left: 260px; 
-            flex-grow: 1; 
-            padding: 40px; 
-        }
-        .header-section { 
-            margin-bottom: 30px; 
-        }
-        .header-title h2 { color: var(--secondary); 
-            font-size: 1.8rem; 
-            margin-bottom: 5px; 
-        }
-        .breadcrumb { font-size: 0.9rem; 
-            color: #888; 
-        }
-
-        /* --- ROOM GRID --- */
+        /* ROOM GRID - Sesuai Gambar */
         .room-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .room-card {
-            background: var(--white); border-radius: 12px; padding: 20px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; border-top: 5px solid #ccc;
+            background: white; border-radius: 15px; padding: 25px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 5px solid #ddd;
         }
-        .card-Bronze { border-top-color: #e74c3c; }
-        .card-Silver { border-top-color: #f39c12; }
-        .card-Gold { border-top-color: #2ecc71; }
-        .card-Platinum { border-top-color: var(--secondary); }
+        /* Border color sesuai type */
+        .card-Bronze { border-top-color: #cd7f32; }
+        .card-Silver { border-top-color: #c0c0c0; }
+        .card-Gold { border-top-color: #ffd700; }
+        .card-Platinum { border-top-color: #e5e4e2; }
 
-        .room-no { font-size: 1.4rem; font-weight: 800; color: var(--secondary); }
-        .status-badge { display: flex; align-items: center; gap: 8px; margin: 15px 0; font-weight: 600; font-size: 0.9rem; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .room-no { font-size: 1.5rem; font-weight: 800; color: var(--secondary); margin-bottom: 10px; }
+        .status-info { display: flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 15px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        
         .st-available { color: var(--status-available); } .st-available .dot { background: var(--status-available); }
         .st-booked { color: var(--status-booked); } .st-booked .dot { background: var(--status-booked); }
         .st-cleaning { color: var(--status-cleaning); } .st-cleaning .dot { background: var(--status-cleaning); }
 
-        .btn-action { 
-            width: 100%; padding: 12px; border: none; border-radius: 8px; 
-            background: var(--primary); color: white; font-weight: bold; cursor: pointer; transition: 0.2s;
+        .btn-update { 
+            width: 100%; padding: 12px; border: none; border-radius: 10px; 
+            background: var(--primary); color: white; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .btn-action:hover { background: var(--secondary); }
 
-        /* --- MODAL POPUP --- */
+        /* MODAL */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000;
-            backdrop-filter: blur(3px);
+            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000;
         }
-        .modal-content { 
-            background: white; padding: 30px; border-radius: 15px; width: 400px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .modal-content h3 { color: var(--secondary); margin-bottom: 20px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
-        .form-group select, .form-group input { 
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; outline: none; 
-        }
-        .modal-footer { display: flex; gap: 10px; justify-content: flex-end; }
-        .btn-cancel { background: #eee; color: #555; padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; }
-        .btn-save { background: var(--primary); color: white; padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
+        .modal-content { background: white; padding: 30px; border-radius: 15px; width: 400px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group select, .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .modal-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+        .btn-save { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <aside class="sidebar">
-        <div class="logo-area">QuickTune</div>
-        <nav class="nav-menu">
-            <li class="nav-item"><a href="indexadmin.html"><i class="fas fa-th-large"></i> Room Management</a></li>
-            <li class="nav-item active"><a href="#"><i class="fas fa-bed"></i> Update Ruangan</a></li>
+        <div class="logo">QuickTune</div>
+        <nav>
+            <li class="nav-item"><a href="indexadmin.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li class="nav-item active"><a href="#"><i class="fas fa-bed"></i> Update Status</a></li>
         </nav>
     </aside>
 
     <main class="main-content">
+        <a href="indexadmin.html" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a>
+        
         <div class="header-section">
-            <div class="header-title">
-                <h2 id="displayTitle">Detail Kamar</h2>
-                <div class="breadcrumb">Admin / Room Management / <span id="currentPath">Tipe</span></div>
-            </div>
+            <h2 id="displayTitle">Update Ruangan</h2>
+            <div class="breadcrumb">Admin / Room Management / <span id="currentPath">Type</span></div>
         </div>
 
         <div class="room-grid" id="roomContainer">
@@ -169,83 +97,85 @@
 
     <div class="modal-overlay" id="modalUpdate">
         <div class="modal-content">
-            <h3>Update Status Kamar <span id="targetRoomId" style="color: var(--primary);"></span></h3>
+            <h3>Update Room <span id="targetRoomId"></span></h3>
             <div class="form-group">
-                <label>Status Ruangan</label>
+                <label>Status</label>
                 <select id="statusSelect">
-                    <option value="available">Tersedia (Available)</option>
-                    <option value="booked">Dibooking (In Use)</option>
-                    <option value="cleaning">Sedang Dibersihkan (Cleaning)</option>
+                    <option value="available">Tersedia</option>
+                    <option value="booked">Dibooking</option>
+                    <option value="cleaning">Dibersihkan</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Keterangan / Durasi</label>
-                <input type="text" id="descInput" placeholder="Contoh: Selesai 22:30">
+                <label>Keterangan</label>
+                <input type="text" id="descInput">
             </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeModal()">Batal</button>
-                <button class="btn-save" onclick="saveStatus()">Simpan Perubahan</button>
+            <div class="modal-btns">
+                <button onclick="closeModal()" style="background: #eee; border:none; padding:10px; border-radius:5px; cursor:pointer;">Batal</button>
+                <button class="btn-save" onclick="saveStatus()">Simpan</button>
             </div>
         </div>
     </div>
 
     <script>
-        // DATA SIMULASI
+        // Data yang disesuaikan dengan parameter type dari URL
         let rooms = [
-            // Bronze Room
-            { id: 'Mini', type: 'Bronze Room', status: 'available', statusName: 'Tersedia', desc: 'Kipas Angin, Kasur Single' },
-            { id: 'Standar', type: 'Bronze Room', status: 'available', statusName: 'Tersedia', desc: 'AC, Kasur Single' },
-            { id: 'Deluxe', type: 'Bronze Room', status: 'booked', statusName: 'Dibooking', desc: 'AC, TV, Queen Bed' },
-            { id: 'Exclusive (B)', type: 'Bronze Room', status: 'available', statusName: 'Tersedia', desc: 'Fasilitas Lengkap Bronze' },
-            
-            // Silver Room
-            { id: 'Lounge', type: 'Silver Room', status: 'available', statusName: 'Tersedia', desc: 'Sofa area, AC, TV' },
-            { id: 'Exclusive (S)', type: 'Silver Room', status: 'booked', statusName: 'Dibooking', desc: 'AC, Queen Bed, Minibar' },
-            { id: 'Mirror', type: 'Silver Room', status: 'available', statusName: 'Tersedia', desc: 'Mirror Wall, AC, Queen Bed' },
-            { id: 'Star', type: 'Silver Room', status: 'cleaning', statusName: 'Dibersihkan', desc: 'Pembersihan rutin' },
+            { id: 'Mini', type: 'Bronze', status: 'available', statusName: 'Tersedia', desc: 'Single Bed' },
+            { id: 'Standar', type: 'Bronze', status: 'booked', statusName: 'Dibooking', desc: 'Selesai 22:00' },
+            { id: 'Deluxe', type: 'Bronze', status: 'cleaning', statusName: 'Dibersihkan', desc: 'Target 20:00' },
+            { id: 'Party', type: 'Bronze', status: 'available', statusName: 'Tersedia', desc: 'King Bed' },
+            { id: 'Studio', type: 'Gold', status: 'available', statusName: 'Tersedia', desc: 'Luxury Suite' },
+            { id: 'Pop', type: 'Gold', status: 'available', statusName: 'Tersedia', desc: 'Single Bed' },
+            { id: 'Akustik', type: 'Gold', status: 'booked', statusName: 'Dibooking', desc: 'Selesai 22:00' },
+            { id: 'Premiere', type: 'Gold', status: 'cleaning', statusName: 'Dibersihkan', desc: 'Target 20:00' },
+            { id: 'Lounge', type: 'Silver', status: 'available', statusName: 'Tersedia', desc: 'King Bed' },
+            { id: 'Exclusive', type: 'Silver', status: 'available', statusName: 'Tersedia', desc: 'Luxury Suite' },
+            { id: 'Mirror', type: 'Silver', status: 'available', statusName: 'Tersedia', desc: 'Single Bed' },
+            { id: 'Star', type: 'Silver', status: 'booked', statusName: 'Dibooking', desc: 'Selesai 22:00' },
+            { id: 'VIP', type: 'Platinum', status: 'cleaning', statusName: 'Dibersihkan', desc: 'Target 20:00' },
+            { id: 'VVIP', type: 'Platinum', status: 'available', statusName: 'Tersedia', desc: 'King Bed' },
+            { id: 'Grand Mega', type: 'Platinum', status: 'available', statusName: 'Tersedia', desc: 'Luxury Suite' },
+            { id: 'Hall', type: 'Platinum', status: 'available', statusName: 'Tersedia', desc: 'Luxury Suite' },
 
-            // Gold Room
-            { id: 'Studio', type: 'Gold Room', status: 'available', statusName: 'Tersedia', desc: 'Sofa area, AC, TV' },
-            { id: 'Pop', type: 'Gold Room', status: 'booked', statusName: 'Dibooking', desc: 'AC, Queen Bed, Minibar' },
-            { id: 'Akustik', type: 'Gold Room', status: 'available', statusName: 'Tersedia', desc: 'Mirror Wall, AC, Queen Bed' },
-            { id: 'Premiere', type: 'Gold Room', status: 'cleaning', statusName: 'Dibersihkan', desc: 'Pembersihan rutin' },
-    
-            // Silver Room
-            { id: 'VIP', type: 'Platinum Room', status: 'available', statusName: 'Tersedia', desc: 'Sofa area, AC, TV' },
-            { id: 'VVIP', type: 'Platinum Room', status: 'booked', statusName: 'Dibooking', desc: 'AC, Queen Bed, Minibar' },
-            { id: 'Grand Mega', type: 'Platinum Room', status: 'available', statusName: 'Tersedia', desc: 'Mirror Wall, AC, Queen Bed' },
-            { id: 'Hall', type: 'Platinum Room', status: 'cleaning', statusName: 'Dibersihkan', desc: 'Pembersihan rutin' }
         ];
-
 
         let activeRoomId = null;
 
-        function getRoomTypeFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('type') || 'Bronze';
-        }
-
         function renderRooms() {
-            const selectedType = getRoomTypeFromURL();
-            const container = document.getElementById('roomContainer');
-            document.getElementById('displayTitle').innerText = `Update Ruangan ${selectedType}`;
-            document.getElementById('currentPath').innerText = selectedType;
+    const params = new URLSearchParams(window.location.search);
+    const selectedType = params.get('type') || 'Bronze';
+    
+    document.getElementById('displayTitle').innerText = `Update Ruangan ${selectedType}`;
+    document.getElementById('currentPath').innerText = selectedType;
 
-            const filteredRooms = rooms.filter(r => r.type === selectedType);
+    const container = document.getElementById('roomContainer');
+    const filtered = rooms.filter(r => r.type === selectedType);
 
-            container.innerHTML = filteredRooms.map(room => `
-                <div class="room-card card-${room.type}">
-                    <div class="room-no">${room.id}</div>
-                    <div class="status-badge st-${room.status}">
-                        <span class="dot"></span> ${room.statusName}
-                    </div>
-                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px; height: 35px;">${room.desc}</p>
-                    <button class="btn-action" onclick="openModal('${room.id}')">Update Status</button>
-                </div>
-            `).join('');
-        }
+    if(filtered.length === 0) {
+        container.innerHTML = `<p>Tidak ada ruangan tipe ${selectedType}</p>`;
+        return;
+    }
 
-        // --- FUNGSI MODAL ---
+    container.innerHTML = filtered.map(room => `
+        <div class="room-card card-${room.type}">
+            <div class="room-no">${room.id}</div>
+            <div class="status-info st-${room.status}">
+                <span class="dot"></span> ${room.statusName}
+            </div>
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">${room.desc}</p>
+            <button class="btn-update" onclick="goToUpdate('${room.id}', '${room.type}')">
+                <i class="fas fa-sync-alt"></i> Update Status
+            </button>
+        </div>
+    `).join('');
+}
+
+// FUNGSI BARU UNTUK PINDAH HALAMAN
+function goToUpdate(roomId, roomType) {
+    // Membawa parameter ID ruangan dan Tipenya ke halaman update
+    window.location.href = `updateroom.html?id=${roomId}&type=${roomType}`;
+}
+
         function openModal(id) {
             activeRoomId = id;
             const room = rooms.find(r => r.id === id);
@@ -260,23 +190,16 @@
         }
 
         function saveStatus() {
+            const index = rooms.findIndex(r => r.id === activeRoomId);
             const newStatus = document.getElementById('statusSelect').value;
-            const newDesc = document.getElementById('descInput').value;
+            const names = { available: 'Tersedia', booked: 'Dibooking', cleaning: 'Dibersihkan' };
             
-            // Cari data di array dan update
-            const roomIndex = rooms.findIndex(r => r.id === activeRoomId);
-            if(roomIndex !== -1) {
-                rooms[roomIndex].status = newStatus;
-                rooms[roomIndex].desc = newDesc;
-                
-                // Set Nama Status Berdasarkan Value
-                const names = { available: 'Tersedia', booked: 'Dibooking', cleaning: 'Dibersihkan' };
-                rooms[roomIndex].statusName = names[newStatus];
-            }
+            rooms[index].status = newStatus;
+            rooms[index].statusName = names[newStatus];
+            rooms[index].desc = document.getElementById('descInput').value;
 
             closeModal();
-            renderRooms(); // Refresh tampilan
-            alert('Status ruangan ' + activeRoomId + ' berhasil diperbarui!');
+            renderRooms();
         }
 
         window.onload = renderRooms;

@@ -1,10 +1,33 @@
+<?php
+// Pastikan tidak ada spasi atau baris kosong sebelum tag <?php di atas
+session_start();
+
+// Data login admin
+$admin_email = "admin@quicktune.com";
+$admin_pass  = "admin123";
+
+// Cek jika ada pengiriman form login
+if (isset($_POST['login_admin'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    if ($email === $admin_email && $password === $admin_pass) {
+        $_SESSION['admin_logged_in'] = true;
+        echo "<script>alert('Login Berhasil!'); window.location='indexadmin.php';</script>";
+        exit;
+    } else {
+        echo "<script>alert('Email atau Password salah!');</script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DapurRasa</title>
+    <title>QuickTune</title>
     <!-- Link CSS -->
     <link rel="stylesheet" href="../css/styles.css">
     <!--Swipper CSS -->
@@ -22,6 +45,7 @@
         <li><a href="#category">Promo</a></li>
         <li><a href="#recipe">Booking</a></li>
         <li><a href="#contact">Contact Us</a></li>
+        <li><span onclick="bukaModal()" class="admin-btn"><i class='bx bx-user-circle'></i> Admin</span></li>
     </ul>
 </header>
 
@@ -44,6 +68,21 @@
 
 </section>
 
+<div id="loginModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="tutupModal()">&times;</span>
+        <h2>Admin Login</h2>
+        <form action="" method="POST">
+            <div class="input-group">
+                <input type="email" name="email" placeholder="Email Admin" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" name="login_admin" class="btn-login-submit">Login Now</button>
+        </form>
+    </div>
+</div>
 
 <!--Kategori-->
 <section class="section-container category-container" id="category">
@@ -82,7 +121,7 @@
 <!-- Resep -->
        <section class="recipe" id="recipe">
     <div class="recipe-container">
-        <h2 class="recipe-title">Choose a Room</h2>
+        <h2 class="recipe-title">Pilih Ruangan</h2>
         <p class="recipe-subtitle">
             Pilih Ruanganmu, Cek Slot Waktu Real Time<br>
             Temukan Ruangan yang Cocok untuk Mood Kamu
@@ -121,7 +160,7 @@
 <!--Testimoni-->
 <section class="testimonials" id="testimonials">
     <div class="testimonials-header">
-        <h2>Testimonials</h2>
+        <h2>Testinomial</h2>
         <p>Apa kata pelanggan setia QuickTune tentang pengalaman karaoke mereka.</p>
     </div>
 
@@ -311,6 +350,24 @@
   </div>
 </footer>-->
 
+<script>
+    function bukaModal() {
+        console.log("Membuka Modal...");
+        document.getElementById("loginModal").style.display = "block";
+    }
+
+    function tutupModal() {
+        document.getElementById("loginModal").style.display = "none";
+    }
+
+    // Tutup modal jika klik di luar kotak putih
+    window.onclick = function(event) {
+        var modal = document.getElementById("loginModal");
+        if (event.target == modal) {
+            tutupModal();
+        }
+    }
+</script>
 <!-- scroll top -->
   <a href="#" class="top"><i class='bx bx-up-arrow-alt'></i></a>
   <script src="https://unpkg.com/scrollreveal"></script>

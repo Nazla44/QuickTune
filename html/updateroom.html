@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickTune Admin - Update Status</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>QuickTune Admin - Update Room Status</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -12,244 +12,101 @@
             --main-color: #FF49C1;
             --second-color: #44113E;
             --sidebar-bg: #2D0B29;
-            --bg-body: #f3f4f7;
+            --bg-body: #f4f7f6;
             --white: #FFFFFF;
             --text-dark: #2d3436;
-            
-            /* Status Colors */
             --status-available: #2ecc71;
             --status-booked: #3498db;
             --status-cleaning: #f39c12;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-dark);
-            display: flex;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-dark); display: flex; min-height: 100vh; }
 
         /* --- SIDEBAR --- */
-        .sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 800;
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--main-color);
-        }
-
-        .nav-menu { flex-grow: 1; padding: 10px 15px; }
-
-        .nav-item { list-style: none; margin-bottom: 8px; }
-
-        .nav-item a {
-            display: flex;
-            align-items: center;
-            padding: 14px 18px;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
-            transition: 0.3s;
-        }
-
-        .nav-item.active a {
-            background-color: var(--main-color);
-            color: white;
-            box-shadow: 0 4px 12px rgba(255, 73, 193, 0.3);
-        }
-
-        .sidebar-footer {
-            padding: 20px;
-            background-color: rgba(0,0,0,0.2);
-            text-align: center;
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.5);
-        }
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); color: var(--white); position: fixed; height: 100vh; z-index: 100; transition: 0.3s; }
+        .logo { font-size: 1.6rem; font-weight: 800; text-align: center; padding: 40px 20px; color: var(--main-color); letter-spacing: -1px; }
+        .nav-menu { padding: 0 15px; }
+        .nav-item { list-style: none; margin-bottom: 10px; }
+        .nav-item a { display: flex; align-items: center; padding: 14px 18px; text-decoration: none; color: rgba(255, 255, 255, 0.6); border-radius: 12px; transition: 0.3s; }
+        .nav-item.active a { background-color: var(--main-color); color: white; box-shadow: 0 4px 15px rgba(255, 73, 193, 0.3); }
+        .nav-item i { margin-right: 12px; width: 20px; text-align: center; }
 
         /* --- MAIN CONTENT --- */
-        .main-content {
-            margin-left: 260px;
-            flex-grow: 1;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
+        .main-content { margin-left: 260px; flex-grow: 1; padding: 40px; }
+        
+        .breadcrumb { margin-bottom: 25px; font-size: 0.9rem; color: #888; display: flex; align-items: center; gap: 8px; }
+        .breadcrumb span { color: var(--main-color); font-weight: 600; }
 
         .content-card {
             background: var(--white);
             width: 100%;
-            max-width: 700px;
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-        }
-
-        .section-header {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .section-header h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--second-color);
-            margin-bottom: 10px;
-        }
-
-        .header-line {
-            width: 50px;
-            height: 4px;
-            background: var(--main-color);
+            max-width: 850px;
             margin: 0 auto;
-            border-radius: 10px;
-        }
-
-        /* --- FORM STYLING --- */
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #555;
-            font-size: 0.95rem;
-        }
-
-        .form-group label i { color: var(--main-color); }
-
-        select, textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #edf2f7;
-            border-radius: 14px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background-color: #f8fafc;
-        }
-
-        select:focus, textarea:focus {
-            border-color: var(--main-color);
-            background-color: white;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(255, 73, 193, 0.1);
-        }
-
-        /* --- CUSTOM RADIO CARDS --- */
-        .status-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .status-card {
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.04);
             position: relative;
+            border: 1px solid rgba(0,0,0,0.02);
         }
 
-        .status-card input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
+        .section-header { margin-bottom: 40px; }
+        .section-header h2 { font-size: 1.8rem; font-weight: 800; color: var(--second-color); }
+        .header-line { width: 60px; height: 5px; background: var(--main-color); margin-top: 10px; border-radius: 10px; }
 
+        /* --- FORM ELEMENTS --- */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 12px; color: #4a5568; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        select, textarea {
+            width: 100%; padding: 16px; border: 2px solid #edf2f7; border-radius: 15px;
+            font-size: 1rem; transition: 0.3s; background-color: #f8fafc; color: #2d3748;
+        }
+        select:focus, textarea:focus { border-color: var(--main-color); outline: none; background: white; }
+
+        /* --- STATUS SELECTOR --- */
+        .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .status-card { position: relative; }
+        .status-card input { position: absolute; opacity: 0; }
+        
         .status-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 10px;
-            border: 2px solid #edf2f7;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            background: #f8fafc;
+            display: flex; flex-direction: column; align-items: center; padding: 20px 10px;
+            border: 2px solid #edf2f7; border-radius: 18px; cursor: pointer; transition: 0.3s;
+            background: #f8fafc; text-align: center;
         }
+        .status-label i { font-size: 1.5rem; margin-bottom: 10px; color: #cbd5e0; }
+        .status-label span { font-weight: 700; font-size: 0.8rem; color: #718096; }
 
-        .status-label i {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-            color: #a0aec0;
-        }
+        /* Checked States */
+        #status-available:checked + .status-label { border-color: var(--status-available); background: rgba(46, 204, 113, 0.05); }
+        #status-available:checked + .status-label i, #status-available:checked + .status-label span { color: var(--status-available); }
 
-        .status-label span {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #718096;
-        }
+        #status-booked:checked + .status-label { border-color: var(--status-booked); background: rgba(52, 152, 219, 0.05); }
+        #status-booked:checked + .status-label i, #status-booked:checked + .status-label span { color: var(--status-booked); }
 
-        /* Active States */
-        #status-available:checked + .status-label {
-            border-color: var(--status-available);
-            background: rgba(46, 204, 113, 0.1);
-        }
-        #status-available:checked + .status-label i, 
-        #status-available:checked + .status-label span { color: var(--status-available); }
+        #status-cleaning:checked + .status-label { border-color: var(--status-cleaning); background: rgba(243, 156, 18, 0.05); }
+        #status-cleaning:checked + .status-label i, #status-cleaning:checked + .status-label span { color: var(--status-cleaning); }
 
-        #status-booked:checked + .status-label {
-            border-color: var(--status-booked);
-            background: rgba(52, 152, 219, 0.1);
-        }
-        #status-booked:checked + .status-label i, 
-        #status-booked:checked + .status-label span { color: var(--status-booked); }
-
-        #status-cleaning:checked + .status-label {
-            border-color: var(--status-cleaning);
-            background: rgba(243, 156, 18, 0.1);
-        }
-        #status-cleaning:checked + .status-label i, 
-        #status-cleaning:checked + .status-label span { color: var(--status-cleaning); }
-
-        /* --- BUTTON --- */
+        /* --- BUTTONS --- */
+        .btn-container { display: flex; gap: 15px; margin-top: 10px; }
         .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--main-color), var(--second-color));
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 10px;
-            box-shadow: 0 10px 20px rgba(106, 20, 82, 0.2);
+            flex: 2; padding: 18px; background: linear-gradient(135deg, var(--main-color), var(--second-color));
+            color: white; border: none; border-radius: 18px; font-size: 1rem; font-weight: 700;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(106, 20, 82, 0.3);
-            filter: brightness(1.1);
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 73, 193, 0.2); }
+        
+        .back-btn {
+            flex: 1; padding: 18px; background: #f1f3f5; color: #4a5568; border: none; border-radius: 18px;
+            text-decoration: none; text-align: center; font-weight: 700; transition: 0.3s;
         }
+        .back-btn:hover { background: #e9ecef; }
 
         @media (max-width: 768px) {
-            .sidebar { width: 70px; }
-            .sidebar .logo, .sidebar span, .sidebar-footer { display: none; }
-            .main-content { margin-left: 70px; padding: 20px; }
-            .status-grid { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -259,46 +116,45 @@
         <div class="logo">QuickTune</div>
         <nav class="nav-menu">
             <ul>
+                <li class="nav-item">
+                    <a href="indexadmin.html"><i class="fas fa-th-large"></i> <span>Dashboard</span></a>
+                </li>
                 <li class="nav-item active">
-                    <a href="#"><i class="fas fa-bed"></i> <span>Room Management</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="#"><i class="fas fa-cash-register"></i> <span>POS & Transaksi</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="#"><i class="fas fa-tags"></i> <span>Pricing & Promo</span></a>
+                    <a href="detailroomadmin.html"><i class="fas fa-bed"></i> <span>Room Management</span></a>
                 </li>
             </ul>
         </nav>
-        <div class="sidebar-footer">Kasir Shift Sore</div>
     </aside>
 
     <main class="main-content">
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i> Admin / Room Management / <span id="breadcrumb-type">Update</span>
+        </div>
+
         <div class="content-card">
             <header class="section-header">
-                <h2>Update Status Ruangan</h2>
+                <h2 id="page-title">Update Status Ruangan</h2>
                 <div class="header-line"></div>
             </header>
 
-            <form action="#">
-                <div class="form-group">
-                    <label for="room-select"><i class="fas fa-door-open"></i> Pilih Nomor Ruangan</label>
-                    <select id="room-select" required>
-                        <option value="" disabled selected>Pilih ruangan...</option>
-                        <optgroup label="Silver Class">
-                            <option value="S01">S01</option>
-                            <option value="S02">S02</option>
-                            <option value="S03">S03</option>
-                        </optgroup>
-                        <optgroup label="VIP Class">
-                            <option value="V01">V01</option>
-                            <option value="V02">V02</option>
-                        </optgroup>
-                    </select>
+            <form id="updateForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tipe Ruangan</label>
+                        <select id="type-display" disabled>
+                            <option id="type-opt"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nomor Ruangan</label>
+                        <select id="room-select" required>
+                            <option value="" disabled selected>Pilih Nomor...</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fas fa-sync-alt"></i> Status Baru</label>
+                    <label>Pilih Status Baru</label>
                     <div class="status-grid">
                         <div class="status-card">
                             <input type="radio" id="status-available" name="room_status" value="available" checked>
@@ -311,7 +167,7 @@
                             <input type="radio" id="status-booked" name="room_status" value="booked">
                             <label for="status-booked" class="status-label">
                                 <i class="fas fa-user-check"></i>
-                                <span>CHECK-IN</span>
+                                <span>DIPAKAI</span>
                             </label>
                         </div>
                         <div class="status-card">
@@ -325,16 +181,69 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="notes"><i class="fas fa-sticky-note"></i> Catatan Tambahan</label>
-                    <textarea id="notes" placeholder="Contoh: AC perlu dicek, Pelanggan minta tambahan handuk..."></textarea>
+                    <label>Keterangan / Catatan</label>
+                    <textarea id="notes" rows="3" placeholder="Contoh: AC bocor, perlu ganti bohlam..."></textarea>
                 </div>
 
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> SIMPAN PERUBAHAN
-                </button>
+                <div class="btn-container">
+                    <a href="javascript:history.back()" class="back-btn">BATAL</a>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> SIMPAN PERUBAHAN
+                    </button>
+                </div>
             </form>
         </div>
     </main>
 
+    <script>
+        // Data Struktur Ruangan
+        const roomData = {
+            'Bronze': ['B01', 'B02', 'B03', 'B04'],
+            'Silver': ['S01', 'S02', 'S03', 'S04', 'S05'],
+            'Gold': ['G01', 'G02', 'G03'],
+            'Platinum': ['P01', 'P02', 'P03'],
+            'VIP': ['V01', 'V02']
+        };
+
+        // 1. Ambil Parameter dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const typeParam = urlParams.get('type') || 'Bronze';
+        const idParam = urlParams.get('id'); // ID spesifik yang diklik
+
+        // 2. Tampilkan Info di UI
+        document.getElementById('page-title').innerText = `Update Ruangan ${typeParam}`;
+        document.getElementById('breadcrumb-type').innerText = typeParam;
+        document.getElementById('type-opt').innerText = typeParam;
+
+        // 3. Isi Dropdown Ruangan sesuai Tipe
+        const select = document.getElementById('room-select');
+        if(roomData[typeParam]) {
+            roomData[typeParam].forEach(room => {
+                const option = document.createElement('option');
+                option.value = room;
+                option.textContent = room;
+                
+                // Jika ID dari URL sama dengan list, otomatis pilih (selected)
+                if(room === idParam) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+        }
+
+        // 4. Proses Simpan
+        document.getElementById('updateForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            const selectedRoom = select.value;
+            const selectedStatus = document.querySelector('input[name="room_status"]:checked').value;
+            
+            // Animasi sukses sederhana
+            alert(`SUKSES!\nRuangan: ${selectedRoom}\nStatus: ${selectedStatus.toUpperCase()}\nBerhasil diperbarui.`);
+            
+            // Kembali ke halaman detail
+            window.location.href = `detailroomadmin.html?type=${typeParam}`;
+        };
+    </script>
 </body>
 </html>
