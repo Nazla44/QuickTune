@@ -197,13 +197,15 @@
 
     <script>
         // Data Struktur Ruangan
-        const roomData = {
-            'Bronze': ['B01', 'B02', 'B03', 'B04'],
+       // Data Struktur Ruangan
+        let roomData = {
+            'Bronze': ['Mini', 'Standar', 'Deluxe', 'Party'],
             'Silver': ['S01', 'S02', 'S03', 'S04', 'S05'],
             'Gold': ['G01', 'G02', 'G03'],
             'Platinum': ['P01', 'P02', 'P03'],
             'VIP': ['V01', 'V02']
         };
+
 
         // 1. Ambil Parameter dari URL
         const urlParams = new URLSearchParams(window.location.search);
