@@ -38,7 +38,7 @@ if (isset($_POST['login_admin'])) {
 <body>
 <!-- Navbar -->
 <header>
-    <a href="#" class="logo"><img src="../img/logo.png" alt="">QuickTune</a>
+    <a href="#" class="logo"><img src="../assets/karaoke.png" alt="">QuickTune</a>
     <div class="bx bx-menu" id="menu-icon"></div>
     <ul class="navbar">
         <li><a href="#home">Home</a></li>
@@ -160,7 +160,7 @@ if (isset($_POST['login_admin'])) {
 <!--Testimoni-->
 <section class="testimonials" id="testimonials">
     <div class="testimonials-header">
-        <h2>Testinomial</h2>
+        <h2>Testimoni</h2>
         <p>Apa kata pelanggan setia QuickTune tentang pengalaman karaoke mereka.</p>
     </div>
 
@@ -353,14 +353,15 @@ if (isset($_POST['login_admin'])) {
 <script>
     function bukaModal() {
         console.log("Membuka Modal...");
-        document.getElementById("loginModal").style.display = "block";
+        // Ubah ke 'flex' supaya align-items: center di CSS bekerja
+        document.getElementById("loginModal").style.display = "flex";
     }
 
     function tutupModal() {
         document.getElementById("loginModal").style.display = "none";
     }
 
-    // Tutup modal jika klik di luar kotak putih
+    // Tutup modal jika klik di luar kotak (area gelap)
     window.onclick = function(event) {
         var modal = document.getElementById("loginModal");
         if (event.target == modal) {
