@@ -103,7 +103,7 @@ header.active .navbar a{
 }
 /* --- MODAL LOGIN MODERN --- */
 #loginModal {
-    display: none; /* Akan diubah menjadi 'flex' lewat JS */
+    display: none; /* INI TETAP NONE - Hanya diubah lewat JS */
     position: fixed;
     top: 0;
     left: 0;
@@ -113,10 +113,9 @@ header.active .navbar a{
     backdrop-filter: blur(10px);
     z-index: 10000;
 
-    /* KUNCI POSISI TENGAH */
-    display: flex;          
-    align-items: center;     /* Tengah secara Vertikal */
-    justify-content: center;  /* Tengah secara Horizontal */
+    /* Gunakan ini untuk memastikan konten tetap di tengah saat muncul nanti */
+    align-items: center;     
+    justify-content: center; 
 }
 
 .modal-content {
@@ -305,8 +304,6 @@ header.active .navbar a{
 
 .home-image img:hover {
     transform: scale(1.08) rotate(1deg);
-<<<<<<< HEAD
-=======
 }
 
 @media (max-width: 900px) {
@@ -362,7 +359,6 @@ header.active .navbar a{
     line-height: 1.6;
     max-width: 450px;
     opacity: 0.95;
->>>>>>> f135646b5b39b117164ad38b3873aaa3fd41f499
 }
 
 /* kategory */
@@ -672,6 +668,8 @@ body {
     .testimonials-grid { grid-template-columns: 1fr; }
 }
 
+=======
+>>>>>>> 160eac2 (booking & admin)
 /* Efek angkat saat mouse menempel */
 .room-card:hover {
     transform: translateY(-10px) !important;
@@ -683,75 +681,6 @@ body {
     margin: 0 auto;
     padding: 0 auto;
 }
-
-/*.top-section-wrapper {
-    background-color: #FFFFFF;
-    padding: 100px 0 100px 0; 
-    border-radius: 0 0 50px 50px; 
-    margin-top: -1px; 
-}
-
-.get-in-touch-card-container {
-    display: flex;
-    justify-content: center;
-}
-
-.get-in-touch-card {
-    width: 600px;
-    padding: 30px 40px;
-    text-align: center;
-    border-radius: 20px;
-    background: var(--home-color);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    color: var(--second-color);
-}
-
-.card-title h3 {
-    font-size: 2em;
-    margin-bottom: 5px;
-    
-}
-
-.card-subtitle {
-    font-size: 1em;
-    opacity: 0.9;
-    margin-bottom: 25px;
-    color: #FFFFFF;
-}
-
-.subscribe-form {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.subscribe-form input[type="email"] {
-    flex-grow: 1;
-    max-width: 250px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1em;
-    outline: none;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.subscribe-btn-white {
-    padding: 12px 30px;
-    border: none;
-    background-color: #FFFFFF;
-    color: var(--second-color); 
-    font-size: 1em;
-    font-weight: bold;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: opacity 0.3s;
-}
-
-.subscribe-btn-white:hover {
-    opacity: 0.9;
-    color: var(--main-color);
-}*/
 
 footer {
     /* BACKGROUND UNGU GELAP SOLID */
@@ -834,6 +763,7 @@ footer {
     }
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 .footer-grid-final {
@@ -976,6 +906,8 @@ footer {
 }
 
 >>>>>>> f135646b5b39b117164ad38b3873aaa3fd41f499
+=======
+>>>>>>> 160eac2 (booking & admin)
 /* Responsiveness Sederhana */
 @media (max-width: 600px) {
     .footer-grid-final {
